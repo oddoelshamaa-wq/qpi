@@ -191,7 +191,7 @@
 
 <button class="dashboard-btn" id="dashBtn" onclick="window.location.href='dashboard.html'">🖥️ Go to Dashboard</button>    </div>
 
-    <script>
+       <script>
         let width = 0;
         const bar = document.getElementById('loadingBar');
         const text = document.getElementById('loadingText');
@@ -202,10 +202,13 @@
             if (width >= 100) {
                 clearInterval(interval);
                 text.innerText = "Welcome to Elshamaa System!";
-                text.style.color = "#06b6d4"; // تغيير اللون للسماوي عند الاكتمال
-                btn.style.display = "inline-block"; // إظهار زر الدخول
+                text.style.color = "#06b6d4";
+                
+                // تحويل تلقائي للوحة التحكم بعد ثانيتين من اكتمال التحميل
+                setTimeout(() => {
+                    window.location.href = 'dashboard.html';
+                }, 2000); // الـ 2000 دي تعني ثانيتين، يمكنك زيادتها أو تقليلها
             } else {
-                // محاكاة التحميل (سرعة متفاوتة لشكل أكثر واقعية)
                 let increment = Math.floor(Math.random() * 5) + 1;
                 width = Math.min(width + increment, 100);
                 bar.style.width = width + '%';
@@ -213,5 +216,7 @@
             }
         }, 80);
     </script>
+</body>
+</html>
 </body>
 </html>
