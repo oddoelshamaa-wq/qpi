@@ -1,3 +1,649 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elshamaa | لوحة التحكم</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-dark: #09090b;
+            --bg-card: #111114;
+            --bg-input: #18181b;
+            --border: #27272a;
+            --text-main: #ffffff;
+            --text-muted: #a1a1aa;
+            --neon-blue: #3b82f6;
+            --neon-cyan: #06b6d4;
+            --danger: #ef4444;
+            --success: #10b981;
+            --hover-bg: #27272a;
+            --warning: #f59e0b; /* لون زر التعديل */
+        }
+
+        body.light-mode {
+            --bg-dark: #f1f5f9;
+            --bg-card: #ffffff;
+            --bg-input: #f8fafc;
+            --border: #e2e8f0;
+            --text-main: #0f172a;
+            --text-muted: #475569;
+            --neon-blue: #2563eb;
+            --neon-cyan: #0891b2;
+            --danger: #dc2626;
+            --success: #059669;
+            --hover-bg: #f1f5f9;
+            --warning: #d97706;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; transition: background-color 0.3s, color 0.3s, border-color 0.3s; }
+        
+        body {
+            background-color: var(--bg-dark);
+            display: flex;
+            height: 100vh;
+            color: var(--text-main);
+            overflow: hidden;
+        }
+
+        .sidebar {
+            width: 340px;
+            background: var(--bg-card);
+            border-left: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            padding: 25px;
+            flex-shrink: 0;
+        }
+
+        .brand {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .brand-right { display: flex; align-items: center; gap: 12px; }
+
+        .brand-logo {
+            width: 40px; height: 40px;
+            background: linear-gradient(135deg, var(--neon-blue), var(--neon-cyan));
+            border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 900; color: #fff; font-size: 1.2rem;
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
+        }
+
+        .brand-name { font-size: 1.2rem; font-weight: 800; letter-spacing: 0.5px; }
+        .brand-sub { font-size: 0.75rem; color: var(--text-muted); }
+
+        .theme-toggle {
+            background: var(--bg-input);
+            border: 1px solid var(--border);
+            width: 40px; height: 40px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            display: flex; align-items: center; justify-content: center;
+            color: var(--text-main);
+        }
+        .theme-toggle:hover { background: var(--hover-bg); }
+
+        .search-box {
+            padding: 14px 18px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            margin-bottom: 15px;
+            outline: none;
+            background: var(--bg-input);
+            color: var(--text-main);
+            font-family: 'Cairo';
+            font-weight: 700;
+        }
+
+        .search-box:focus {
+            border-color: var(--neon-cyan);
+            box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.15);
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .add-emp-btn {
+            flex: 1;
+            padding: 12px;
+            background: transparent;
+            border: 1px dashed var(--neon-blue);
+            color: var(--neon-blue);
+            border-radius: 12px;
+            font-weight: 800;
+            cursor: pointer;
+            font-family: 'Cairo';
+        }
+        .add-emp-btn:hover { background: rgba(59, 130, 246, 0.1); }
+
+        .delete-emp-btn {
+            padding: 12px 15px;
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: var(--danger);
+            border-radius: 12px;
+            font-weight: 800;
+            cursor: pointer;
+            font-family: 'Cairo';
+        }
+        .delete-emp-btn:hover { background: var(--danger); color: #fff; }
+
+        .emp-list {
+            list-style: none;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        .emp-list::-webkit-scrollbar { width: 6px; }
+        .emp-list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
+
+        .emp-item {
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 12px;
+            cursor: pointer;
+            background: var(--bg-input);
+            border: 1px solid transparent;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .emp-item:hover {
+            background: var(--hover-bg);
+            transform: translateX(-5px);
+        }
+        
+        .emp-item.active {
+            background: linear-gradient(90deg, rgba(59, 130, 246, 0.1), transparent);
+            border-color: var(--neon-blue);
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.1);
+        }
+
+        .emp-info-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .emp-avatar {
+            width: 40px; height: 40px;
+            background: var(--hover-bg);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 800; color: var(--neon-cyan);
+            border: 2px solid var(--border);
+        }
+
+        .emp-item.active .emp-avatar {
+            background: var(--neon-blue);
+            color: #fff;
+            border-color: var(--neon-cyan);
+        }
+
+        .emp-name { font-weight: 700; font-size: 1rem; }
+
+        .list-delete-btn {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--danger);
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            opacity: 0;
+        }
+
+        .emp-item:hover .list-delete-btn {
+            opacity: 1;
+        }
+
+        .list-delete-btn:hover {
+            background: var(--danger);
+            color: white;
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 50px;
+            overflow-y: auto;
+            background: radial-gradient(circle at top right, var(--bg-card), var(--bg-dark));
+        }
+
+        .main-content::-webkit-scrollbar { width: 8px; }
+        .main-content::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .welcome-msg {
+            text-align: center;
+            margin-top: 15%;
+            color: var(--text-muted);
+        }
+        .welcome-msg h1 { font-weight: 900; font-size: 2.5rem; color: var(--text-main); margin-bottom: 10px; }
+        .welcome-msg p { font-size: 1.1rem; font-weight: 600; }
+
+        .header-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+        .header-title { font-size: 2rem; font-weight: 900; }
+        .header-sub { color: var(--text-muted); font-size: 0.95rem; margin-top: 5px; font-weight: 600; }
+
+        .card {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 1px solid var(--border);
+            animation: fadeInUp 0.5s ease-out forwards;
+        }
+
+        .card-title {
+            font-weight: 800;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.2rem;
+            color: var(--text-main);
+        }
+
+        .grid-layout {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 25px;
+        }
+
+        .form-group { display: flex; flex-direction: column; }
+        .form-group label { font-size: 0.9rem; font-weight: 700; margin-bottom: 10px; color: var(--text-muted); }
+        
+        input, select {
+            padding: 14px 18px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            background: var(--bg-input);
+            outline: none;
+            color: var(--text-main);
+            font-family: 'Cairo';
+            font-weight: 700;
+        }
+        
+        input:focus, select:focus { 
+            border-color: var(--neon-blue); 
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .total-box {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(6, 182, 212, 0.1));
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            font-weight: 900;
+            color: var(--neon-cyan);
+            margin-top: 25px;
+            font-size: 1.3rem;
+            border: 1px solid rgba(6, 182, 212, 0.3);
+        }
+
+        .save-btn {
+            background: linear-gradient(135deg, var(--neon-blue), var(--neon-cyan));
+            color: #fff;
+            border: none;
+            padding: 18px 30px;
+            border-radius: 12px;
+            width: 100%;
+            font-size: 1.1rem;
+            font-weight: 900;
+            cursor: pointer;
+            margin-top: 10px;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 20px rgba(59, 130, 246, 0.3);
+        }
+
+        .save-btn:hover { 
+            transform: translateY(-3px); 
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.5);
+        }
+
+        /* ======== تصميم السجل الوظيفي ======== */
+        .history-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 20px;
+        }
+
+        .history-card {
+            background: var(--bg-input);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .history-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 15px;
+            border-bottom: 1px dashed var(--border);
+        }
+
+        .history-date {
+            font-size: 1.2rem;
+            font-weight: 900;
+            color: var(--neon-cyan);
+        }
+
+        .history-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .history-btn {
+            padding: 6px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 0.85rem;
+            border: 1px solid transparent;
+        }
+
+        .history-edit-btn {
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--warning);
+            border-color: rgba(245, 158, 11, 0.2);
+        }
+        .history-edit-btn:hover { background: var(--warning); color: #fff; }
+
+        .history-delete-btn {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--danger);
+            border-color: rgba(239, 68, 68, 0.2);
+        }
+        .history-delete-btn:hover { background: var(--danger); color: #fff; }
+
+        .history-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .stat-box {
+            background: var(--bg-card);
+            padding: 12px;
+            border-radius: 10px;
+            text-align: center;
+            border: 1px solid var(--border);
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-bottom: 5px;
+            font-weight: 700;
+        }
+
+        .stat-value {
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: var(--text-main);
+        }
+
+        .stat-value.success { color: var(--success); }
+        .stat-value.danger { color: var(--danger); }
+        .stat-value.blue { color: var(--neon-blue); }
+        .stat-value.cyan { color: var(--neon-cyan); }
+
+        .history-footer {
+            background: var(--bg-card);
+            padding: 10px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        .tag { 
+            padding: 6px 12px; 
+            border-radius: 8px; 
+            font-size: 0.8rem; 
+            font-weight: 800; 
+            background: rgba(16, 185, 129, 0.1); 
+            color: var(--success); 
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .tag-danger {
+            padding: 6px 12px; 
+            border-radius: 8px; 
+            font-size: 0.8rem; 
+            font-weight: 800; 
+            background: rgba(239, 68, 68, 0.1); 
+            color: var(--danger); 
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+        
+        .no-records {
+            text-align: center;
+            color: var(--text-muted);
+            font-weight: 700;
+            padding: 40px;
+            grid-column: 1 / -1;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.7);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            backdrop-filter: blur(5px);
+        }
+        .modal-overlay.active { display: flex; }
+        
+        .modal-box {
+            background: var(--bg-card);
+            padding: 40px;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 450px;
+            border: 1px solid var(--border);
+            animation: fadeInUp 0.3s ease;
+        }
+        
+        .modal-title { font-size: 1.5rem; font-weight: 900; margin-bottom: 20px; }
+        .modal-input { width: 100%; margin-bottom: 20px; padding: 15px; border-radius: 12px; background: var(--bg-input); border: 1px solid var(--border); color: var(--text-main); outline: none; font-weight: 700; }
+        .modal-actions { display: flex; gap: 15px; }
+        .modal-btn { flex: 1; padding: 15px; border-radius: 12px; cursor: pointer; font-weight: 800; border: none; font-family: 'Cairo'; }
+        .btn-save { background: var(--neon-blue); color: #fff; }
+        .btn-cancel { background: var(--bg-input); color: var(--text-main); border: 1px solid var(--border); }
+
+        @media (max-width: 768px) {
+            body { flex-direction: column; }
+            .sidebar { width: 100%; height: 40vh; }
+            .main-content { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <div class="brand">
+            <div class="brand-right">
+                <div class="brand-logo">N</div>
+                <div>
+                    <div class="brand-name">Elshamaa System</div>
+                    <div class="brand-sub">Employee Evaluation</div>
+                </div>
+            </div>
+            <button class="theme-toggle" id="themeToggle">🌙</button>
+        </div>
+        
+        <input type="text" class="search-box" id="empSearch" placeholder="🔍 ابحث عن موظف..." onkeyup="filterEmployees()">
+        
+        <div class="action-buttons">
+            <button class="add-emp-btn" onclick="openModal()">➕ إضافة موظف</button>
+             <button class="add-emp-btn" style="border-color: var(--success); color: var(--success);" onclick="showGeneralReport()">📋 تقرير الشهر العام</button>
+
+        </div>
+        
+        <ul class="emp-list" id="empList">
+            <li style="text-align:center; padding:20px; color:var(--text-muted);">جاري تحميل الأسماء...</li>
+        </ul>
+    </div>
+
+    <div class="main-content">
+        <div id="welcome" class="welcome-msg">
+            <h1>لوحة التحكم 📊</h1>
+            <p>اختر موظف من القائمة لبدء التقييم ومراجعة السجلات.</p>
+        </div>
+
+        <div id="mainForm" style="display: none;">
+            <div class="header-bar">
+                <div>
+                    <div class="header-title" id="empHeaderName">اسم الموظف</div>
+                    <div class="header-sub">إدارة وتقييم الأداء الشهري</div>
+                </div>
+            </div>
+
+            <div class="card" style="animation-delay: 0.1s;">
+                <div class="card-title">📅 تحديد الشهر</div>
+                <input type="month" id="reportDate" style="width: 100%; max-width: 300px;">
+            </div>
+
+            <div class="card" style="animation-delay: 0.2s;">
+                <div class="card-title">🍹 الملعبات والمخلالات</div>
+                <div class="grid-layout">
+                    <div class="form-group"><label>مشروبات</label><input type="number" class="calc" id="drinks" value="0" min="0"></div>
+                    <div class="form-group"><label>مخلل 1</label><input type="number" class="calc" id="p1" value="0" min="0"></div>
+                    <div class="form-group"><label>مخلل 2</label><input type="number" class="calc" id="p2" value="0" min="0"></div>
+                    <div class="form-group"><label>بتنجان 1</label><input type="number" class="calc" id="e1" value="0" min="0"></div>
+                    <div class="form-group"><label>بتنجان 2</label><input type="number" class="calc" id="e2" value="0" min="0"></div>
+                </div>
+                <div class="total-box">المخللات والملعبات: <span id="foodTotal">0</span></div>
+            </div>
+
+            <div class="grid-layout" style="grid-template-columns: 1fr 1fr; margin-bottom: 30px; gap: 30px;">
+                <div class="card" style="margin:0; animation-delay: 0.3s;">
+                    <div class="card-title">🔥 الجريل</div>
+                    <input type="number" id="grill" value="0" min="0" style="width:100%">
+                </div>
+                <div class="card" style="margin:0; animation-delay: 0.4s;">
+                    <div class="card-title">⭐ الكواليتي</div>
+                    <input type="text" id="quality" placeholder="مثلاً 95%" style="width:100%">
+                </div>
+            </div>
+
+            <div class="card" style="animation-delay: 0.5s;">
+                <div class="card-title">⚠️ المخالفات والحضور</div>
+                <div class="grid-layout">
+                    <div class="form-group"><label>شكاوى</label><input type="number" id="comp" value="0" min="0"></div>
+                    <div class="form-group"><label>تغيير شيفت</label><input type="number" id="shiftChange" value="0" min="0"></div>
+                    <div class="form-group"><label>نزل في إجازة</label><input type="number" id="workHoliday" value="0" min="0"></div>
+                    <div class="form-group"><label>غياب في وردية</label><input type="number" id="shiftAbsence" value="0" min="0"></div>
+                    <div class="form-group">
+                        <label>خصم المدير</label>
+                        <select id="mgrDeduction">
+                            <option value="لا يوجد">لا يوجد</option>
+                            <option value="ربع يوم">ربع يوم</option>
+                            <option value="نص يوم">نص يوم</option>
+                            <option value="أسبوع">أسبوع</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <button class="save-btn" id="saveBtn">💾 حفظ التقييم الشهري</button>
+            <button class="save-btn" id="cancelEditBtn" style="display: none; background: linear-gradient(135deg, var(--text-muted), var(--hover-bg)); margin-top: -30px;">❌ إلغاء التعديل</button>
+
+            <div class="card" style="animation-delay: 0.6s;">
+                <div class="card-title">📜 السجل الوظيفي للموظف</div>
+                <div class="history-grid" id="historyBody"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="empModal">
+        <div class="modal-box">
+            <div class="modal-title">➕ إضافة موظف جديد</div>
+            <input type="text" class="modal-input" id="newEmpName" placeholder="اكتب اسم الموظف هنا...">
+            <div class="modal-actions">
+                <button class="modal-btn btn-cancel" onclick="closeModal()">إلغاء</button>
+                <button class="modal-btn btn-save" id="saveEmpBtn">حفظ الموظف</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getDatabase, ref, onValue, push, remove, set, update } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDhQDPwYPwPPWUnFaeVga9iGejDNkLgXH0",
+            authDomain: "nagam-12f98.firebaseapp.com",
+            databaseURL: "https://nagam-12f98-default-rtdb.firebaseio.com",
+            projectId: "nagam-12f98",
+            storageBucket: "nagam-12f98.firebasestorage.app",
+            messagingSenderId: "489197943984",
+            appId: "1:489197943984:web:2b1823691e8e525b288f75",
+            measurementId: "G-LB7V0QWTYP"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+
+        let currentEmpId = "";
+        let currentHistoryRef = null; 
+        let isEditing = false;
+        let editingRecId = null;
+
+   window.selectEmployee = function(id, name, element) {
+    currentEmpId = id;
+    document.getElementById('welcome').style.display = "none";
+    document.getElementById('mainForm').style.display = "block";
+    document.getElementById('empHeaderName').innerText = name;
+    
+    // إظهار الحقول التي ربما أخفاها التقرير العام
+    document.querySelectorAll('.card, .save-btn').forEach(c => c.style.display = "block");
+    document.getElementById('cancelEditBtn').style.display = "none";
+
+    document.querySelectorAll('.emp-item').forEach(el => el.classList.remove('active'));
+    if(element && element.classList) element.classList.add('active');
+    
+    resetForm();
+    loadHistory(id);
+}
+        // وظيفة لعرض تقرير جميع الموظفين لشهر معين
 window.showGeneralReport = function() {
     const selectedMonth = document.getElementById('reportDate').value;
     if (!selectedMonth) return alert("الرجاء تحديد الشهر أولاً");
@@ -56,8 +702,7 @@ window.showGeneralReport = function() {
                                     </div>
                                     <div class="stat-box">
                                         <div class="stat-label">الكواليتي</div>
-                                        <div class="stat-value success">${r.quality || '-'}</div>
-                                    </div>
+<div class="stat-value success">${r.quality ? (r.quality.toString().includes('%') ? r.quality : r.quality + '%') : '-'}</div>                                    </div>
                                     <div class="stat-box">
                                         <div class="stat-label">شكاوى</div>
                                         <div class="stat-value danger">${r.comp || 0}</div>
@@ -92,3 +737,312 @@ window.showGeneralReport = function() {
         }, { onlyOnce: true });
     }, { onlyOnce: true });
 }
+
+        window.deleteSpecificEmployee = function(id, name) {
+            if (confirm(`⚠️ هل أنت متأكد من حذف الموظف "${name}" وجميع سجلاته؟`)) {
+                remove(ref(db, 'employees/' + id))
+                    .then(() => {
+                        remove(ref(db, 'qpi_records/' + id));
+                        alert("تم حذف الموظف بنجاح.");
+                        if (currentEmpId === id) {
+                            document.getElementById('mainForm').style.display = "none";
+                            document.getElementById('welcome').style.display = "block";
+                            currentEmpId = "";
+                        }
+                    })
+                    .catch(err => alert("خطأ في الحذف: " + err));
+            }
+        }
+
+        function resetForm() {
+            isEditing = false;
+            editingRecId = null;
+            document.getElementById('saveBtn').innerText = "💾 حفظ التقييم الشهري";
+            document.getElementById('cancelEditBtn').style.display = "none";
+            
+            document.querySelectorAll('#mainForm input[type="number"], #mainForm input[type="text"]').forEach(inp => {
+                if(inp.id !== 'reportDate') {
+                    inp.value = inp.type === 'number' ? '0' : '';
+                }
+            });
+            document.getElementById('foodTotal').innerText = '0';
+            document.getElementById('mgrDeduction').value = 'لا يوجد'; 
+        }
+
+        window.editRecord = function(recId) {
+            const empId = currentEmpId;
+            const recRef = ref(db, 'qpi_records/' + empId + '/' + recId);
+            
+            onValue(recRef, (snap) => {
+                const r = snap.val();
+                if (!r) return alert("السجل غير موجود");
+                
+                document.getElementById('reportDate').value = r.date;
+                document.getElementById('foodTotal').innerText = r.food;
+                document.getElementById('grill').value = r.grill || 0;
+                document.getElementById('quality').value = r.quality || '';
+                document.getElementById('comp').value = r.comp || 0;
+                document.getElementById('shiftChange').value = r.shiftChange || 0;
+                document.getElementById('workHoliday').value = r.workHoliday || 0;
+                document.getElementById('shiftAbsence').value = r.shiftAbsence || 0;
+                document.getElementById('mgrDeduction').value = r.mgrDeduction || 'لا يوجد';
+
+                isEditing = true;
+                editingRecId = recId;
+                
+                document.getElementById('saveBtn').innerText = "🔄 تحديث التقييم";
+                document.getElementById('cancelEditBtn').style.display = "block";
+                
+                // التمرير لأعلى الصفحة
+                document.getElementById('mainForm').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, { onlyOnce: true });
+        }
+
+        window.saveRecord = function() {
+            const dateInput = document.getElementById('reportDate').value;
+            if (!dateInput) return alert("⚠️ الرجاء اختيار الشهر أولاً!");
+
+            const data = {
+                date: dateInput,
+                food: document.getElementById('foodTotal').innerText,
+                grill: document.getElementById('grill').value,
+                quality: document.getElementById('quality').value,
+                comp: document.getElementById('comp').value, 
+                shiftChange: document.getElementById('shiftChange').value,
+                workHoliday: document.getElementById('workHoliday').value,
+                shiftAbsence: document.getElementById('shiftAbsence').value,
+                mgrDeduction: document.getElementById('mgrDeduction').value 
+            };
+
+            if (isEditing && editingRecId) {
+                // وضع التعديل
+                update(ref(db, 'qpi_records/' + currentEmpId + '/' + editingRecId), data)
+                  .then(() => {
+                      alert("✅ تم تحديث التقييم بنجاح!");
+                      resetForm();
+                      loadHistory(currentEmpId);
+                  })
+                  .catch(err => alert("حدث خطأ: " + err));
+            } else {
+                // وضع الحفظ الجديد
+                push(ref(db, 'qpi_records/' + currentEmpId), data)
+                  .then(() => {
+                      alert("✅ تم حفظ التقييم بنجاح!");
+                      resetForm();
+                      loadHistory(currentEmpId);
+                  })
+                  .catch(err => alert("حدث خطأ: " + err));
+            }
+        }
+
+        window.deleteRec = function(empId, recId) {
+            if(confirm("هل أنت متأكد من حذف هذا السجل الشهري؟")) {
+                remove(ref(db, 'qpi_records/' + empId + '/' + recId));
+                if(editingRecId === recId) resetForm();
+            }
+        }
+
+        window.filterEmployees = function() {
+            let filter = document.getElementById('empSearch').value.toLowerCase();
+            let items = document.querySelectorAll('.emp-item');
+            items.forEach(item => {
+                let txt = item.innerText.toLowerCase();
+                item.style.display = txt.includes(filter) ? "flex" : "none";
+            });
+        }
+
+        const themeToggle = document.getElementById('themeToggle');
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'light') {
+            document.body.classList.add('light-mode');
+            themeToggle.innerText = '☀️';
+        }
+
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('light-mode');
+            if (document.body.classList.contains('light-mode')) {
+                themeToggle.innerText = '☀️';
+                localStorage.setItem('theme', 'light');
+            } else {
+                themeToggle.innerText = '🌙';
+                localStorage.setItem('theme', 'dark');
+            }
+        });
+
+        window.openModal = function() {
+            document.getElementById('empModal').classList.add('active');
+            document.getElementById('newEmpName').focus();
+        }
+
+        window.closeModal = function() {
+            document.getElementById('empModal').classList.remove('active');
+            document.getElementById('newEmpName').value = '';
+        }
+
+        document.getElementById('saveEmpBtn').addEventListener('click', () => {
+            const name = document.getElementById('newEmpName').value.trim();
+            if (!name) return alert("اكتب اسم الموظف الأول!");
+            
+            const newEmpRef = push(ref(db, 'employees'));
+            set(newEmpRef, { name: name })
+              .then(() => {
+                  alert("تم إضافة الموظف بنجاح!");
+                  closeModal();
+              })
+              .catch(err => alert("خطأ: " + err));
+        });
+
+        document.getElementById('cancelEditBtn').addEventListener('click', () => {
+            if(confirm("هل تريد إلغاء التعديل؟")) {
+                resetForm();
+            }
+        });
+
+        function loadHistory(id) {
+            if (currentHistoryRef) {
+                onValue(currentHistoryRef, () => {}, () => {});
+            }
+            
+            currentHistoryRef = ref(db, 'qpi_records/' + id);
+            const body = document.getElementById('historyBody');
+            const selectedMonth = document.getElementById('reportDate').value;
+
+            onValue(currentHistoryRef, (snap) => {
+                body.innerHTML = "";
+                let hasRecords = false;
+
+                if (!snap.exists()) {
+                    body.innerHTML = '<div class="no-records">لا توجد بيانات مسجلة لهذا الموظف</div>';
+                    return;
+                }
+
+                snap.forEach(child => {
+                    const r = child.val();
+                    if (r.date === selectedMonth) {
+                        hasRecords = true;
+                        const deductionText = r.mgrDeduction || 'لا يوجد';
+                        const deductionClass = deductionText !== 'لا يوجد' ? 'tag-danger' : 'tag';
+                        
+                        const cardHtml = `
+                            <div class="history-card">
+                                <div class="history-card-header">
+                                    <div class="history-date">📅 تقرير شهر: ${r.date}</div>
+                                    <div class="history-actions">
+                                        <button class="history-btn history-edit-btn" onclick="editRecord('${child.key}')">✏️ تعديل</button>
+                                        <button class="history-btn history-delete-btn" onclick="deleteRec('${id}','${child.key}')">🗑️ حذف</button>
+                                    </div>
+                                </div>
+                                
+                                <div class="history-stats">
+                                    <div class="stat-box">
+                                        <div class="stat-label">المخللات والملعبات</div>
+                                        <div class="stat-value cyan">${r.food}</div>
+                                    </div>
+                                    <div class="stat-box">
+                                        <div class="stat-label">الجريل</div>
+                                        <div class="stat-value blue">${r.grill}</div>
+                                    </div>
+                                    <div class="stat-box">
+                                        <div class="stat-label">الكواليتي</div>
+<div class="stat-value success">${r.quality ? (r.quality.toString().includes('%') ? r.quality : r.quality + '%') : '-'}</div>                                    </div>
+                                    <div class="stat-box">
+                                        <div class="stat-label">شكاوى</div>
+                                        <div class="stat-value danger">${r.comp || 0}</div>
+                                    </div>
+                                    <div class="stat-box">
+                                        <div class="stat-label">تغيير شيفت</div>
+                                        <div class="stat-value">${r.shiftChange || 0}</div>
+                                    </div>
+                                    <div class="stat-box">
+                                        <div class="stat-label">نزل في إجازة</div>
+                                        <div class="stat-value">${r.workHoliday || 0}</div>
+                                    </div>
+                                    <div class="stat-box">
+                                        <div class="stat-label">غياب في وردية</div>
+                                        <div class="stat-value danger">${r.shiftAbsence || 0}</div>
+                                    </div>
+                                </div>
+
+                                <div class="history-footer">
+                                    <span>خصم المدير:</span>
+                                    <span class="${deductionClass}">${deductionText}</span>
+                                </div>
+                            </div>
+                        `;
+                        body.innerHTML += cardHtml;
+                    }
+                });
+
+                if (!hasRecords) {
+                    body.innerHTML = `<div class="no-records">لا توجد سجلات لشهر ${selectedMonth}</div>`;
+                }
+            });
+        }
+
+        document.getElementById('saveBtn').addEventListener('click', window.saveRecord);
+
+        document.querySelectorAll('.calc').forEach(inp => {
+            inp.addEventListener('input', () => {
+                let total = 0;
+                document.querySelectorAll('.calc').forEach(i => total += Number(i.value) || 0);
+                document.getElementById('foodTotal').innerText = total;
+            });
+        });
+
+        // إخفاء السجلات عند تغيير الشهر
+        document.getElementById('reportDate').addEventListener('change', () => {
+            if (currentEmpId) {
+                resetForm(); // تصفير الحقول إذا كان في وضع تعديل
+                loadHistory(currentEmpId);
+            }
+        });
+
+        const empRef = ref(db, 'employees');
+        onValue(empRef, (snapshot) => {
+            if (snapshot.exists()) {
+                renderList(snapshot);
+            } else {
+                onValue(ref(db, 'users'), (snap) => renderList(snap));
+            }
+        });
+
+        function renderList(snapshot) {
+            const list = document.getElementById('empList');
+            list.innerHTML = "";
+            if (!snapshot.exists()) {
+                list.innerHTML = '<li style="text-align:center; padding:20px; color:var(--text-muted);">لا يوجد موظفين مسجلين</li>';
+                return;
+            }
+            snapshot.forEach((child) => {
+                const emp = child.val();
+                const id = child.key;
+                const name = emp.name || emp.empName || emp; 
+                const firstLetter = name.charAt(0);
+                
+                const li = document.createElement('li');
+                li.className = 'emp-item';
+                
+                li.innerHTML = `
+                    <div class="emp-info-wrapper">
+                        <div class="emp-avatar">${firstLetter}</div>
+                        <div class="emp-name">${name}</div>
+                    </div>
+                    <button class="list-delete-btn" onclick="event.stopPropagation(); deleteSpecificEmployee('${id}', '${name}')">
+                        🗑️
+                    </button>
+                `;
+                
+                li.onclick = (e) => {
+                    if (!e.target.classList.contains('list-delete-btn')) {
+                        window.selectEmployee(id, name, li);
+                    }
+                };
+                
+                list.appendChild(li);
+            });
+        }
+
+        document.getElementById('reportDate').value = new Date().toISOString().slice(0, 7);
+    </script>
+</body>
+</html>
