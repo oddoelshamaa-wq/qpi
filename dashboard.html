@@ -640,6 +640,10 @@
                     <div class="card-title">🔥 الجريل</div>
                     <input type="number" id="grill" value="0" min="0" style="width:100%">
                 </div>
+                  <div class="card" style="margin:0; animation-delay: 0.35s;">
+        <div class="card-title">📦  عداد الأوردرات </div>
+        <input type="number" id="orders" value="0" min="0" style="width:100%">
+    </div>
                 <div class="card" style="margin:0; animation-delay: 0.4s;">
                     <div class="card-title">⭐ الكواليتي</div>
                     <input type="text" id="quality" placeholder="مثلاً 95%" style="width:100%">
@@ -786,6 +790,10 @@ window.showGeneralReport = function() {
                                         <div class="stat-label">الكواليتي</div>
 <div class="stat-value success">${r.quality ? (r.quality.toString().includes('%') ? r.quality : r.quality + '%') : '-'}</div>                                    </div>
                                     <div class="stat-box">
+                                        <div class="stat-box">
+    <div class="stat-label">عدد الأوردرات</div>
+    <div class="stat-value" style="color: #f59e0b;">${r.orders || 0}</div>
+</div>
                                         <div class="stat-label">شكاوى</div>
                                         <div class="stat-value danger">${r.comp || 0}</div>
                                     </div>
@@ -836,20 +844,21 @@ window.showGeneralReport = function() {
             }
         }
 
-        function resetForm() {
-            isEditing = false;
-            editingRecId = null;
-            document.getElementById('saveBtn').innerText = "💾 حفظ التقييم الشهري";
-            document.getElementById('cancelEditBtn').style.display = "none";
-            
-            document.querySelectorAll('#mainForm input[type="number"], #mainForm input[type="text"]').forEach(inp => {
-                if(inp.id !== 'reportDate') {
-                    inp.value = inp.type === 'number' ? '0' : '';
-                }
-            });
-            document.getElementById('foodTotal').innerText = '0';
-            document.getElementById('mgrDeduction').value = 'لا يوجد'; 
+     function resetForm() {
+    isEditing = false;
+    editingRecId = null;
+    document.getElementById('saveBtn').innerText = "💾 حفظ التقييم الشهري";
+    document.getElementById('cancelEditBtn').style.display = "none";
+    
+    document.querySelectorAll('#mainForm input[type="number"], #mainForm input[type="text"]').forEach(inp => {
+        if(inp.id !== 'reportDate') {
+            inp.value = inp.type === 'number' ? '0' : '';
         }
+    });
+    document.getElementById('orders').value = '0'; // إضافة هذا السطر
+    document.getElementById('foodTotal').innerText = '0';
+    document.getElementById('mgrDeduction').value = 'لا يوجد'; 
+}
 
         window.editRecord = function(recId) {
             const empId = currentEmpId;
@@ -863,6 +872,7 @@ window.showGeneralReport = function() {
                 document.getElementById('foodTotal').innerText = r.food;
                 document.getElementById('grill').value = r.grill || 0;
                 document.getElementById('quality').value = r.quality || '';
+            document.getElementById('orders').value = r.orders || 0; // أضف هذا السطر            
                 document.getElementById('comp').value = r.comp || 0;
                 document.getElementById('shiftChange').value = r.shiftChange || 0;
                 document.getElementById('workHoliday').value = r.workHoliday || 0;
@@ -888,6 +898,8 @@ window.showGeneralReport = function() {
                 date: dateInput,
                 food: document.getElementById('foodTotal').innerText,
                 grill: document.getElementById('grill').value,
+                        orders: document.getElementById('orders').value, // أضف هذا السطر
+
                 quality: document.getElementById('quality').value,
                 comp: document.getElementById('comp').value, 
                 shiftChange: document.getElementById('shiftChange').value,
@@ -980,86 +992,91 @@ window.showGeneralReport = function() {
             }
         });
 
-        function loadHistory(id) {
-            if (currentHistoryRef) {
-                onValue(currentHistoryRef, () => {}, () => {});
-            }
-            
-            currentHistoryRef = ref(db, 'qpi_records/' + id);
-            const body = document.getElementById('historyBody');
-            const selectedMonth = document.getElementById('reportDate').value;
+   function loadHistory(id) {
+    if (currentHistoryRef) {
+        onValue(currentHistoryRef, () => {}, () => {});
+    }
+    
+    currentHistoryRef = ref(db, 'qpi_records/' + id);
+    const body = document.getElementById('historyBody');
+    const selectedMonth = document.getElementById('reportDate').value;
 
-            onValue(currentHistoryRef, (snap) => {
-                body.innerHTML = "";
-                let hasRecords = false;
+    onValue(currentHistoryRef, (snap) => {
+        body.innerHTML = "";
+        let hasRecords = false;
 
-                if (!snap.exists()) {
-                    body.innerHTML = '<div class="no-records">لا توجد بيانات مسجلة لهذا الموظف</div>';
-                    return;
-                }
-
-                snap.forEach(child => {
-                    const r = child.val();
-                    if (r.date === selectedMonth) {
-                        hasRecords = true;
-                        const deductionText = r.mgrDeduction || 'لا يوجد';
-                        const deductionClass = deductionText !== 'لا يوجد' ? 'tag-danger' : 'tag';
-                        
-                        const cardHtml = `
-                            <div class="history-card">
-                                <div class="history-card-header">
-                                    <div class="history-date">📅 تقرير شهر: ${r.date}</div>
-                                    <div class="history-actions">
-                                        <button class="history-btn history-edit-btn" onclick="editRecord('${child.key}')">✏️ تعديل</button>
-                                        <button class="history-btn history-delete-btn" onclick="deleteRec('${id}','${child.key}')">🗑️ حذف</button>
-                                    </div>
-                                </div>
-                                
-                                <div class="history-stats">
-                                    <div class="stat-box">
-                                        <div class="stat-label">المخللات والملعبات</div>
-                                        <div class="stat-value cyan">${r.food}</div>
-                                    </div>
-                                    <div class="stat-box">
-                                        <div class="stat-label">الجريل</div>
-                                        <div class="stat-value blue">${r.grill}</div>
-                                    </div>
-                                    <div class="stat-box">
-                                        <div class="stat-label">الكواليتي</div>
-<div class="stat-value success">${r.quality ? (r.quality.toString().includes('%') ? r.quality : r.quality + '%') : '-'}</div>                                    </div>
-                                    <div class="stat-box">
-                                        <div class="stat-label">شكاوى</div>
-                                        <div class="stat-value danger">${r.comp || 0}</div>
-                                    </div>
-                                    <div class="stat-box">
-                                        <div class="stat-label">تغيير شيفت</div>
-                                        <div class="stat-value">${r.shiftChange || 0}</div>
-                                    </div>
-                                    <div class="stat-box">
-                                        <div class="stat-label">نزل في إجازة</div>
-                                        <div class="stat-value">${r.workHoliday || 0}</div>
-                                    </div>
-                                    <div class="stat-box">
-                                        <div class="stat-label">غياب في وردية</div>
-                                        <div class="stat-value danger">${r.shiftAbsence || 0}</div>
-                                    </div>
-                                </div>
-
-                                <div class="history-footer">
-                                    <span>خصم المدير:</span>
-                                    <span class="${deductionClass}">${deductionText}</span>
-                                </div>
-                            </div>
-                        `;
-                        body.innerHTML += cardHtml;
-                    }
-                });
-
-                if (!hasRecords) {
-                    body.innerHTML = `<div class="no-records">لا توجد سجلات لشهر ${selectedMonth}</div>`;
-                }
-            });
+        if (!snap.exists()) {
+            body.innerHTML = '<div class="no-records">لا توجد بيانات مسجلة لهذا الموظف</div>';
+            return;
         }
+
+        snap.forEach(child => {
+            const r = child.val();
+            if (r.date === selectedMonth) {
+                hasRecords = true;
+                const deductionText = r.mgrDeduction || 'لا يوجد';
+                const deductionClass = deductionText !== 'لا يوجد' ? 'tag-danger' : 'tag';
+                
+                const cardHtml = `
+                    <div class="history-card">
+                        <div class="history-card-header">
+                            <div class="history-date">📅 تقرير شهر: ${r.date}</div>
+                            <div class="history-actions">
+                                <button class="history-btn history-edit-btn" onclick="editRecord('${child.key}')">✏️</button>
+                                <button class="history-btn history-delete-btn" onclick="deleteRec('${id}','${child.key}')">🗑️</button>
+                            </div>
+                        </div>
+                        
+                        <div class="history-stats">
+                            <div class="stat-box">
+                                <div class="stat-label">📦  عداد لأوردرات</div>
+                                <div class="stat-value" style="color: var(--warning);">${r.orders || 0}</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-label">🔥 الجريل</div>
+                                <div class="stat-value blue">${r.grill || 0}</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-label">🍹 المعلبات و المخللات</div>
+                                <div class="stat-value cyan">${r.food || 0}</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-label">⭐ الكواليتي</div>
+                                <div class="stat-value success">${r.quality ? (r.quality.toString().includes('%') ? r.quality : r.quality + '%') : '-'}</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-label">⚠️ شكاوى</div>
+                                <div class="stat-value danger">${r.comp || 0}</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-label">🔄 تغيير شيفت</div>
+                                <div class="stat-value">${r.shiftChange || 0}</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-label">🏖️ نزل إجازة</div>
+                                <div class="stat-value">${r.workHoliday || 0}</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-label">❌ غياب وردية</div>
+                                <div class="stat-value danger">${r.shiftAbsence || 0}</div>
+                            </div>
+                        </div>
+
+                        <div class="history-footer">
+                            <span>خصم المدير:</span>
+                            <span class="${deductionClass}">${deductionText}</span>
+                        </div>
+                    </div>
+                `;
+                body.innerHTML += cardHtml;
+            }
+        });
+
+        if (!hasRecords) {
+            body.innerHTML = `<div class="no-records">لا توجد سجلات لشهر ${selectedMonth}</div>`;
+        }
+    });
+}
 
         document.getElementById('saveBtn').addEventListener('click', window.saveRecord);
 
