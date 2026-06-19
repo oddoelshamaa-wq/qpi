@@ -47,7 +47,6 @@
             overflow: hidden;
         }
 
-        /* القائمة الجانبية */
         .sidebar {
             width: 340px;
             background: var(--bg-card);
@@ -56,7 +55,7 @@
             flex-direction: column;
             padding: 25px;
             flex-shrink: 0;
-            z-index: 10; /* لضمان ظهور القائمة فوق الخلفية */
+            z-index: 10;
         }
 
         .brand {
@@ -70,25 +69,16 @@
         
         .brand-right { display: flex; align-items: center; gap: 12px; }
 
-        /* تصميم اللوجو الصغير في القائمة */
         .brand-logo {
-            width: 45px; 
-            height: 45px;
+            width: 45px; height: 45px;
             background: transparent;
             border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
             overflow: hidden;
             box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
-            /* تم إيقاف اللفان هنا لأن الصورة أصبحت في الخلفية */
         }
 
-        .brand-logo img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            /* animation: spinLogo 4s linear infinite;  <- تم تعطيله */
-        }
-
+        .brand-logo img { width: 100%; height: 100%; object-fit: cover; }
         .brand-name { font-size: 1.2rem; font-weight: 800; letter-spacing: 0.5px; }
         .brand-sub { font-size: 0.75rem; color: var(--text-muted); }
 
@@ -115,18 +105,9 @@
             font-family: 'Cairo';
             font-weight: 700;
         }
+        .search-box:focus { border-color: var(--neon-cyan); box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.15); }
 
-        .search-box:focus {
-            border-color: var(--neon-cyan);
-            box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.15);
-        }
-
-        .action-buttons {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
+        .action-buttons { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
 
         .add-emp-btn {
             padding: 12px;
@@ -141,25 +122,7 @@
         }
         .add-emp-btn:hover { background: rgba(59, 130, 246, 0.1); }
 
-        .delete-emp-btn {
-            padding: 12px 15px;
-            background: rgba(239, 68, 68, 0.1);
-            border: 1px solid rgba(239, 68, 68, 0.3);
-            color: var(--danger);
-            border-radius: 12px;
-            font-weight: 800;
-            cursor: pointer;
-            font-family: 'Cairo';
-            text-align: center;
-        }
-        .delete-emp-btn:hover { background: var(--danger); color: #fff; }
-
-        .emp-list {
-            list-style: none;
-            overflow-y: auto;
-            flex: 1;
-        }
-
+        .emp-list { list-style: none; overflow-y: auto; flex: 1; }
         .emp-list::-webkit-scrollbar { width: 6px; }
         .emp-list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
 
@@ -175,23 +138,14 @@
             justify-content: space-between;
             align-items: center;
         }
-
-        .emp-item:hover {
-            background: var(--hover-bg);
-            transform: translateX(-5px);
-        }
-        
+        .emp-item:hover { background: var(--hover-bg); transform: translateX(-5px); }
         .emp-item.active {
             background: linear-gradient(90deg, rgba(59, 130, 246, 0.1), transparent);
             border-color: var(--neon-blue);
             box-shadow: 0 0 15px rgba(59, 130, 246, 0.1);
         }
 
-        .emp-info-wrapper {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
+        .emp-info-wrapper { display: flex; align-items: center; gap: 15px; }
 
         .emp-avatar {
             width: 40px; height: 40px;
@@ -201,48 +155,30 @@
             font-weight: 800; color: var(--neon-cyan);
             border: 2px solid var(--border);
         }
-
-        .emp-item.active .emp-avatar {
-            background: var(--neon-blue);
-            color: #fff;
-            border-color: var(--neon-cyan);
-        }
-
+        .emp-item.active .emp-avatar { background: var(--neon-blue); color: #fff; border-color: var(--neon-cyan); }
         .emp-name { font-weight: 700; font-size: 1rem; }
 
         .list-delete-btn {
             background: rgba(239, 68, 68, 0.1);
             color: var(--danger);
             border: none;
-            width: 32px;
-            height: 32px;
+            width: 32px; height: 32px;
             border-radius: 8px;
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            display: flex; align-items: center; justify-content: center;
             transition: all 0.2s;
             opacity: 0;
         }
+        .emp-item:hover .list-delete-btn { opacity: 1; }
+        .list-delete-btn:hover { background: var(--danger); color: white; }
 
-        .emp-item:hover .list-delete-btn {
-            opacity: 1;
-        }
-
-        .list-delete-btn:hover {
-            background: var(--danger);
-            color: white;
-        }
-
-        /* المحتوى الرئيسي */
         .main-content {
             flex: 1;
-            padding: 0; /* إزالة الحواشي للسماح للخلفية بالظهور */
+            padding: 0;
             overflow-y: auto;
             background: radial-gradient(circle at top right, var(--bg-card), var(--bg-dark));
             position: relative;
         }
-
         .main-content::-webkit-scrollbar { width: 8px; }
         .main-content::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
 
@@ -251,79 +187,25 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* ======== تعديل شاشة الترحيب لتكون خلفية كاملة ======== */
         #welcome {
-            position: absolute; /* ثابت في مكانه */
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
             z-index: 1;
-            /* الصورة كخلفية */
             background-image: url('d2bae440-8f7a-4199-a0dc-c51d98fdb0bc.jpg');
-            background-size: cover; /* تغطية كاملة */
-            background-position: center; /* توسيط الصورة */
-            background-repeat: no-repeat;
+            background-size: cover; background-position: center; background-repeat: no-repeat;
         }
-
-        /* طبقة تعتيم فوق الصورة لضمان قراءة النص */
         #welcome::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(9, 9, 11, 0.7); /* لون داكن شفاف */
-            z-index: -1; /* خلف النص */
+            content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(9, 9, 11, 0.7); z-index: -1;
         }
-        
-        /* تنسيق النصوص في المنتصف */
-        .welcome-msg {
-            text-align: center;
-            color: var(--text-main);
-            z-index: 2;
-            padding: 20px;
-            /* حركة بسيطة للنص */
-            animation: fadeInUp 0.8s ease-out;
-        }
-        
-        .welcome-msg h1 { 
-            font-weight: 900; 
-            font-size: 3rem; 
-            color: #fff; 
-            margin-bottom: 10px; 
-            text-shadow: 0 0 20px rgba(0,0,0,0.8);
-        }
-        .welcome-msg p { 
-            font-size: 1.3rem; 
-            font-weight: 600; 
-            color: #e0e0e0;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
-        }
+        .welcome-msg { text-align: center; color: var(--text-main); z-index: 2; padding: 20px; animation: fadeInUp 0.8s ease-out; }
+        .welcome-msg h1 { font-weight: 900; font-size: 3rem; color: #fff; margin-bottom: 10px; text-shadow: 0 0 20px rgba(0,0,0,0.8); }
+        .welcome-msg p { font-size: 1.3rem; font-weight: 600; color: #e0e0e0; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
+        .welcome-msg img { display: none; }
 
-        /* إخفاء الصورة القديمة التي كانت موجودة في الـ HTML */
-        .welcome-msg img {
-            display: none; 
-        }
+        #mainForm { padding: 50px; position: relative; z-index: 2; animation: fadeInUp 0.5s ease-out; }
 
-        /* ================================================= */
-
-        /* تنسيق النموذج عند ظهوره */
-        #mainForm {
-            padding: 50px;
-            position: relative;
-            z-index: 2; /* ليكون فوق الخلفية إذا ظهرت */
-            animation: fadeInUp 0.5s ease-out;
-        }
-
-        .header-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 40px;
-        }
+        .header-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; }
         .header-title { font-size: 2rem; font-weight: 900; }
         .header-sub { color: var(--text-muted); font-size: 0.95rem; margin-top: 5px; font-weight: 600; }
 
@@ -335,23 +217,13 @@
             border: 1px solid var(--border);
             animation: fadeInUp 0.5s ease-out forwards;
         }
-
         .card-title {
-            font-weight: 800;
-            margin-bottom: 25px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            font-size: 1.2rem;
-            color: var(--text-main);
+            font-weight: 800; margin-bottom: 25px;
+            display: flex; align-items: center; gap: 12px;
+            font-size: 1.2rem; color: var(--text-main);
         }
 
-        .grid-layout {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 25px;
-        }
-
+        .grid-layout { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 25px; }
         .form-group { display: flex; flex-direction: column; }
         .form-group label { font-size: 0.9rem; font-weight: 700; margin-bottom: 10px; color: var(--text-muted); }
         
@@ -365,50 +237,111 @@
             font-family: 'Cairo';
             font-weight: 700;
         }
-        
-        input:focus, select:focus { 
-            border-color: var(--neon-blue); 
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-        }
+        input:focus, select:focus { border-color: var(--neon-blue); box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1); }
 
         .total-box {
             background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(6, 182, 212, 0.1));
-            padding: 20px;
-            border-radius: 12px;
-            text-align: center;
-            font-weight: 900;
-            color: var(--neon-cyan);
-            margin-top: 25px;
-            font-size: 1.3rem;
+            padding: 20px; border-radius: 12px; text-align: center;
+            font-weight: 900; color: var(--neon-cyan); margin-top: 25px; font-size: 1.3rem;
             border: 1px solid rgba(6, 182, 212, 0.3);
         }
 
         .save-btn {
             background: linear-gradient(135deg, var(--neon-blue), var(--neon-cyan));
-            color: #fff;
-            border: none;
-            padding: 18px 30px;
-            border-radius: 12px;
-            width: 100%;
-            font-size: 1.1rem;
-            font-weight: 900;
-            cursor: pointer;
-            margin-top: 10px;
-            margin-bottom: 40px;
+            color: #fff; border: none; padding: 18px 30px; border-radius: 12px;
+            width: 100%; font-size: 1.1rem; font-weight: 900; cursor: pointer;
+            margin-top: 10px; margin-bottom: 40px;
             box-shadow: 0 4px 20px rgba(59, 130, 246, 0.3);
         }
+        .save-btn:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(59, 130, 246, 0.5); }
 
-        .save-btn:hover { 
-            transform: translateY(-3px); 
-            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.5);
+        /* ★★ تصميم جديد لقسم التواريخ المتعددة ★★ */
+        .dates-group {
+            background: var(--bg-input);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 16px;
         }
 
-        /* تصميم السجل الوظيفي */
-        .history-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 20px;
+        .dates-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
         }
+
+        .dates-count {
+            font-size: 0.85rem;
+            font-weight: 800;
+            color: var(--neon-cyan);
+            background: rgba(6, 182, 212, 0.1);
+            padding: 4px 12px;
+            border-radius: 8px;
+            border: 1px solid rgba(6, 182, 212, 0.2);
+        }
+
+        .add-date-btn {
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px dashed var(--neon-blue);
+            color: var(--neon-blue);
+            padding: 6px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 800;
+            font-size: 0.8rem;
+            font-family: 'Cairo';
+            transition: all 0.2s;
+        }
+        .add-date-btn:hover { background: rgba(59, 130, 246, 0.2); transform: scale(1.03); }
+
+        .dates-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            max-height: 150px;
+            overflow-y: auto;
+        }
+        .dates-list::-webkit-scrollbar { width: 4px; }
+        .dates-list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
+
+        .date-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            animation: fadeInUp 0.2s ease;
+        }
+
+        .date-row input[type="date"] {
+            flex: 1;
+            padding: 10px 14px;
+            font-size: 0.9rem;
+        }
+
+        .date-row .remove-date-btn {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--danger);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            width: 36px; height: 36px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1rem;
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+        .date-row .remove-date-btn:hover { background: var(--danger); color: #fff; }
+
+        .dates-empty {
+            text-align: center;
+            padding: 12px;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        /* ★★ نهاية تصميم التواريخ ★★ */
+
+        .history-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 20px; }
 
         .history-card {
             background: var(--bg-input);
@@ -419,143 +352,99 @@
             flex-direction: column;
             gap: 15px;
         }
-
         .history-card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding-bottom: 15px;
-            border-bottom: 1px dashed var(--border);
+            display: flex; justify-content: space-between; align-items: center;
+            padding-bottom: 15px; border-bottom: 1px dashed var(--border);
         }
-
-        .history-date {
-            font-size: 1.2rem;
-            font-weight: 900;
-            color: var(--neon-cyan);
-        }
-
-        .history-actions {
-            display: flex;
-            gap: 8px;
-        }
+        .history-date { font-size: 1.2rem; font-weight: 900; color: var(--neon-cyan); }
+        .history-actions { display: flex; gap: 8px; }
 
         .history-btn {
-            padding: 6px 12px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 700;
-            font-size: 0.85rem;
-            border: 1px solid transparent;
+            padding: 6px 12px; border-radius: 8px; cursor: pointer;
+            font-weight: 700; font-size: 0.85rem; border: 1px solid transparent;
         }
-
-        .history-edit-btn {
-            background: rgba(245, 158, 11, 0.1);
-            color: var(--warning);
-            border-color: rgba(245, 158, 11, 0.2);
-        }
+        .history-edit-btn { background: rgba(245, 158, 11, 0.1); color: var(--warning); border-color: rgba(245, 158, 11, 0.2); }
         .history-edit-btn:hover { background: var(--warning); color: #fff; }
-
-        .history-delete-btn {
-            background: rgba(239, 68, 68, 0.1);
-            color: var(--danger);
-            border-color: rgba(239, 68, 68, 0.2);
-        }
+        .history-delete-btn { background: rgba(239, 68, 68, 0.1); color: var(--danger); border-color: rgba(239, 68, 68, 0.2); }
         .history-delete-btn:hover { background: var(--danger); color: #fff; }
 
-        .history-stats {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-        }
+        .history-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 
         .stat-box {
             background: var(--bg-card);
-            padding: 12px;
-            border-radius: 10px;
-            text-align: center;
-            border: 1px solid var(--border);
+            padding: 12px; border-radius: 10px;
+            text-align: center; border: 1px solid var(--border);
         }
-
-        .stat-label {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            margin-bottom: 5px;
-            font-weight: 700;
-        }
-
-        .stat-value {
-            font-size: 1.1rem;
-            font-weight: 800;
-            color: var(--text-main);
-        }
-
+        .stat-label { font-size: 0.75rem; color: var(--text-muted); margin-bottom: 5px; font-weight: 700; }
+        .stat-value { font-size: 1.1rem; font-weight: 800; color: var(--text-main); }
         .stat-value.success { color: var(--success); }
         .stat-value.danger { color: var(--danger); }
         .stat-value.blue { color: var(--neon-blue); }
         .stat-value.cyan { color: var(--neon-cyan); }
 
+        /* ★★ تصميم عرض التواريخ في السجل ★★ */
+        .stat-value-with-dates {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            align-items: center;
+        }
+        .stat-value-main {
+            font-size: 1.1rem;
+            font-weight: 800;
+        }
+        .stat-dates-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            justify-content: center;
+        }
+        .stat-date-chip {
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 6px;
+            direction: ltr;
+            display: inline-block;
+        }
+        .stat-date-chip.warning-chip {
+            background: rgba(245, 158, 11, 0.15);
+            color: var(--warning);
+            border: 1px solid rgba(245, 158, 11, 0.25);
+        }
+        .stat-date-chip.danger-chip {
+            background: rgba(239, 68, 68, 0.15);
+            color: var(--danger);
+            border: 1px solid rgba(239, 68, 68, 0.25);
+        }
+        .stat-date-chip.cyan-chip {
+            background: rgba(6, 182, 212, 0.15);
+            color: var(--neon-cyan);
+            border: 1px solid rgba(6, 182, 212, 0.25);
+        }
+
         .history-footer {
             background: var(--bg-card);
-            padding: 10px;
-            border-radius: 10px;
-            border: 1px solid var(--border);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-weight: 700;
-            font-size: 0.9rem;
+            padding: 10px; border-radius: 10px; border: 1px solid var(--border);
+            display: flex; justify-content: space-between; align-items: center;
+            font-weight: 700; font-size: 0.9rem;
         }
 
-        .tag { 
-            padding: 6px 12px; 
-            border-radius: 8px; 
-            font-size: 0.8rem; 
-            font-weight: 800; 
-            background: rgba(16, 185, 129, 0.1); 
-            color: var(--success); 
-            border: 1px solid rgba(16, 185, 129, 0.2);
-        }
-
-        .tag-danger {
-            padding: 6px 12px; 
-            border-radius: 8px; 
-            font-size: 0.8rem; 
-            font-weight: 800; 
-            background: rgba(239, 68, 68, 0.1); 
-            color: var(--danger); 
-            border: 1px solid rgba(239, 68, 68, 0.2);
-        }
+        .tag { padding: 6px 12px; border-radius: 8px; font-size: 0.8rem; font-weight: 800; background: rgba(16, 185, 129, 0.1); color: var(--success); border: 1px solid rgba(16, 185, 129, 0.2); }
+        .tag-danger { padding: 6px 12px; border-radius: 8px; font-size: 0.8rem; font-weight: 800; background: rgba(239, 68, 68, 0.1); color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.2); }
         
-        .no-records {
-            text-align: center;
-            color: var(--text-muted);
-            font-weight: 700;
-            padding: 40px;
-            grid-column: 1 / -1;
-        }
+        .no-records { text-align: center; color: var(--text-muted); font-weight: 700; padding: 40px; grid-column: 1 / -1; }
 
         .modal-overlay {
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.7);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 100;
-            backdrop-filter: blur(5px);
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.7); display: none; align-items: center; justify-content: center;
+            z-index: 100; backdrop-filter: blur(5px);
         }
         .modal-overlay.active { display: flex; }
-        
         .modal-box {
-            background: var(--bg-card);
-            padding: 40px;
-            border-radius: 20px;
-            width: 100%;
-            max-width: 450px;
-            border: 1px solid var(--border);
-            animation: fadeInUp 0.3s ease;
+            background: var(--bg-card); padding: 40px; border-radius: 20px;
+            width: 100%; max-width: 450px; border: 1px solid var(--border); animation: fadeInUp 0.3s ease;
         }
-        
         .modal-title { font-size: 1.5rem; font-weight: 900; margin-bottom: 20px; }
         .modal-input { width: 100%; margin-bottom: 20px; padding: 15px; border-radius: 12px; background: var(--bg-input); border: 1px solid var(--border); color: var(--text-main); outline: none; font-weight: 700; }
         .modal-actions { display: flex; gap: 15px; }
@@ -569,6 +458,7 @@
             .main-content { padding: 0; }
             #mainForm { padding: 20px; }
             .welcome-msg h1 { font-size: 2rem; }
+            .history-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -577,7 +467,6 @@
     <div class="sidebar">
         <div class="brand">
             <div class="brand-right">
-                <!-- اللوجو الصغير في القائمة -->
                 <div class="brand-logo">
                     <img src="d2bae440-8f7a-4199-a0dc-c51d98fdb0bc.jpg" alt="Logo">
                 </div>
@@ -602,10 +491,7 @@
     </div>
 
     <div class="main-content">
-        
-        <!-- منطقة الترحيب مع الخلفية الكاملة -->
         <div id="welcome" class="welcome-msg">
-            <!-- تم نقل الصورة إلى CSS كخلفية -->
             <h1>لوحة التحكم</h1>
             <p>اختر موظف من القائمة لبدء التقييم ومراجعة السجلات.</p>
         </div>
@@ -640,23 +526,26 @@
                     <div class="card-title">🔥 الجريل</div>
                     <input type="number" id="grill" value="0" min="0" style="width:100%">
                 </div>
-                  <div class="card" style="margin:0; animation-delay: 0.35s;">
-        <div class="card-title">📦  عداد الأوردرات </div>
-        <input type="number" id="orders" value="0" min="0" style="width:100%">
-    </div>
+                <div class="card" style="margin:0; animation-delay: 0.35s;">
+                    <div class="card-title">📦 عداد الأوردرات</div>
+                    <input type="number" id="orders" value="0" min="0" style="width:100%">
+                </div>
                 <div class="card" style="margin:0; animation-delay: 0.4s;">
                     <div class="card-title">⭐ الكواليتي</div>
                     <input type="text" id="quality" placeholder="مثلاً 95%" style="width:100%">
                 </div>
             </div>
 
+            <!-- ★★ قسم المخالفات والحضور - محدث بالكامل ★★ -->
             <div class="card" style="animation-delay: 0.5s;">
                 <div class="card-title">⚠️ المخالفات والحضور</div>
                 <div class="grid-layout">
-                    <div class="form-group"><label>شكاوى</label><input type="number" id="comp" value="0" min="0"></div>
-                    <div class="form-group"><label>تغيير شيفت</label><input type="number" id="shiftChange" value="0" min="0"></div>
-                    <div class="form-group"><label>نزل في إجازة</label><input type="number" id="workHoliday" value="0" min="0"></div>
-                    <div class="form-group"><label>غياب في وردية</label><input type="number" id="shiftAbsence" value="0" min="0"></div>
+                    
+                    <div class="form-group">
+                        <label>شكاوى</label>
+                        <input type="number" id="comp" value="0" min="0">
+                    </div>
+
                     <div class="form-group">
                         <label>خصم المدير</label>
                         <select id="mgrDeduction">
@@ -666,6 +555,49 @@
                             <option value="أسبوع">أسبوع</option>
                         </select>
                     </div>
+
+                    <!-- ★ تغيير شيفت - عدد + تواريخ -->
+                    <div class="form-group" style="grid-column: 1 / -1;">
+                        <label>🔄 تغيير شيفت</label>
+                        <div class="dates-group">
+                            <div class="dates-header">
+                                <span class="dates-count" id="shiftChangeCount">0 مرات</span>
+                                <button type="button" class="add-date-btn" onclick="addDateRow('shiftChangeDates')">+ إضافة تاريخ</button>
+                            </div>
+                            <div class="dates-list" id="shiftChangeDates">
+                                <div class="dates-empty">لم يتم إضافة تواريخ بعد</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ★ نزل إجازة - عدد + تواريخ -->
+                    <div class="form-group" style="grid-column: 1 / -1;">
+                        <label>🏖️ نزل في إجازة</label>
+                        <div class="dates-group">
+                            <div class="dates-header">
+                                <span class="dates-count" id="workHolidayCount">0 مرات</span>
+                                <button type="button" class="add-date-btn" onclick="addDateRow('workHolidayDates')">+ إضافة تاريخ</button>
+                            </div>
+                            <div class="dates-list" id="workHolidayDates">
+                                <div class="dates-empty">لم يتم إضافة تواريخ بعد</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ★ غياب وردية - عدد + تواريخ -->
+                    <div class="form-group" style="grid-column: 1 / -1;">
+                        <label>❌ غياب في وردية</label>
+                        <div class="dates-group">
+                            <div class="dates-header">
+                                <span class="dates-count" id="shiftAbsenceCount">0 مرات</span>
+                                <button type="button" class="add-date-btn" onclick="addDateRow('shiftAbsenceDates')">+ إضافة تاريخ</button>
+                            </div>
+                            <div class="dates-list" id="shiftAbsenceDates">
+                                <div class="dates-empty">لم يتم إضافة تواريخ بعد</div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
 
@@ -713,123 +645,192 @@
         let isEditing = false;
         let editingRecId = null;
 
-   window.selectEmployee = function(id, name, element) {
-    currentEmpId = id;
-    document.getElementById('welcome').style.display = "none";
-    document.getElementById('mainForm').style.display = "block";
-    document.getElementById('empHeaderName').innerText = name;
-    
-    // إظهار الحقول التي ربما أخفاها التقرير العام
-    document.querySelectorAll('.card, .save-btn').forEach(c => c.style.display = "block");
-    document.getElementById('cancelEditBtn').style.display = "none";
+        /* ★★ دالة إضافة صف تاريخ جديد ★★ */
+        window.addDateRow = function(containerId) {
+            const container = document.getElementById(containerId);
+            // إزالة رسالة "لم يتم إضافة"
+            const empty = container.querySelector('.dates-empty');
+            if (empty) empty.remove();
 
-    document.querySelectorAll('.emp-item').forEach(el => el.classList.remove('active'));
-    if(element && element.classList) element.classList.add('active');
-    
-    resetForm();
-    loadHistory(id);
-}
-        // وظيفة لعرض تقرير جميع الموظفين لشهر معين
-// وظيفة لعرض تقرير جميع الموظفين لشهر معين بتنسيق مطابق للسجل الفردي
-window.showGeneralReport = function() {
-    const selectedMonth = document.getElementById('reportDate').value;
-    if (!selectedMonth) return alert("الرجاء تحديد الشهر أولاً");
-    
-    currentEmpId = ""; 
-    document.querySelectorAll('.emp-item').forEach(el => el.classList.remove('active'));
-    document.getElementById('welcome').style.display = "none";
-    document.getElementById('mainForm').style.display = "block";
-    document.getElementById('empHeaderName').innerText = "التقرير العام لشهر: " + selectedMonth;
-    
-    // إخفاء حقول الإدخال وإظهار منطقة التقرير فقط
-    const cardsToHide = document.querySelectorAll('.card:not(:last-child), .save-btn');
-    cardsToHide.forEach(c => c.style.display = "none");
-    document.getElementById('reportDate').parentElement.style.display = "block";
+            const row = document.createElement('div');
+            row.className = 'date-row';
+            row.innerHTML = `
+                <input type="date">
+                <button type="button" class="remove-date-btn" onclick="this.parentElement.remove(); updateDateCount('${containerId}');">✕</button>
+            `;
+            container.appendChild(row);
+            row.querySelector('input').focus();
+            updateDateCount(containerId);
+        }
 
-    const body = document.getElementById('historyBody');
-    body.innerHTML = '<div class="no-records">جاري تجميع البيانات...</div>';
+        /* ★★ تحديث عداد المرات ★★ */
+        function updateDateCount(containerId) {
+            const container = document.getElementById(containerId);
+            const rows = container.querySelectorAll('.date-row');
+            const count = rows.length;
+            
+            let countId = containerId.replace('Dates', 'Count');
+            const countEl = document.getElementById(countId);
+            if (countEl) countEl.textContent = count + ' مرات';
 
-    onValue(ref(db, 'employees'), (empSnap) => {
-        const employees = empSnap.val() || {};
-        
-        onValue(ref(db, 'qpi_records'), (recordsSnap) => {
-            body.innerHTML = "";
-            let foundAny = false;
-
-            recordsSnap.forEach((empRecord) => {
-                const empId = empRecord.key;
-                const empName = employees[empId]?.name || "موظف غير معروف";
-                
-                empRecord.forEach((record) => {
-                    const r = record.val();
-                    if (r.date === selectedMonth) {
-                        foundAny = true;
-                        const deductionText = r.mgrDeduction || 'لا يوجد';
-                        const deductionClass = deductionText !== 'لا يوجد' ? 'tag-danger' : 'tag';
-
-                        // تصميم مطابق تماماً للسجل الفردي (كما في الصورة الثانية)
-                        body.innerHTML += `
-                            <div class="history-card" style="border-top: 4px solid var(--neon-cyan)">
-                                <div class="history-card-header">
-                                    <div class="history-date">👤 ${empName}</div>
-                                    <div class="history-actions">
-                                        <button class="history-btn history-edit-btn" 
-                                            style="background: rgba(6, 182, 212, 0.1); color: var(--neon-cyan); border-color: var(--neon-cyan);" 
-                                            onclick="selectEmployee('${empId}', '${empName}', null)">📂 فتح ملفه</button>
-                                    </div>
-                                </div>
-                                
-                                <div class="history-stats">
-                                    <div class="stat-box">
-                                        <div class="stat-label">🍹 المعلبات و المخللات</div>
-                                        <div class="stat-value cyan">${r.food || 0}</div>
-                                    </div>
-                                    <div class="stat-box">
-                                        <div class="stat-label">🔥 الجريل</div>
-                                        <div class="stat-value blue">${r.grill || 0}</div>
-                                    </div>
-                                    <div class="stat-box">
-                                        <div class="stat-label">⭐ الكواليتي</div>
-                                        <div class="stat-value success">${r.quality ? (r.quality.toString().includes('%') ? r.quality : r.quality + '%') : '-'}</div>
-                                    </div>
-                                    <div class="stat-box">
-                                        <div class="stat-label">⚠️ شكاوى</div>
-                                        <div class="stat-value danger">${r.comp || 0}</div>
-                                    </div>
-                                    <div class="stat-box">
-                                        <div class="stat-label">📦 عداد الأوردرات</div>
-                                        <div class="stat-value" style="color: var(--warning);">${r.orders || 0}</div>
-                                    </div>
-                                    <div class="stat-box">
-                                        <div class="stat-label">🔄 تغيير شيفت</div>
-                                        <div class="stat-value">${r.shiftChange || 0}</div>
-                                    </div>
-                                    <div class="stat-box">
-                                        <div class="stat-label">🏖️ نزل إجازة</div>
-                                        <div class="stat-value">${r.workHoliday || 0}</div>
-                                    </div>
-                                    <div class="stat-box">
-                                        <div class="stat-label">❌ غياب وردية</div>
-                                        <div class="stat-value danger">${r.shiftAbsence || 0}</div>
-                                    </div>
-                                </div>
-
-                                <div class="history-footer">
-                                    <span>خصم المدير:</span>
-                                    <span class="${deductionClass}">${deductionText}</span>
-                                </div>
-                            </div>
-                        `;
-                    }
-                });
-            });
-
-            if (!foundAny) {
-                body.innerHTML = `<div class="no-records">لا توجد سجلات مسجلة لأي موظف في شهر ${selectedMonth}</div>`;
+            // لو مفيش تواريخ، نرجع الرسالة الفاضية
+            if (count === 0 && !container.querySelector('.dates-empty')) {
+                container.innerHTML = '<div class="dates-empty">لم يتم إضافة تواريخ بعد</div>';
             }
-        }, { onlyOnce: true });
-    }, { onlyOnce: true });
-}
+        }
+
+        /* ★★ جمع التواريخ من حاوية معينة كمصفوفة ★★ */
+        function collectDates(containerId) {
+            const container = document.getElementById(containerId);
+            const rows = container.querySelectorAll('.date-row input[type="date"]');
+            let dates = [];
+            rows.forEach(inp => {
+                if (inp.value) dates.push(inp.value);
+            });
+            return dates;
+        }
+
+        /* ★★ تنسيق تاريخ واحد من 2025-01-15 لـ 15/01/2025 ★★ */
+        function fmtDate(d) {
+            if (!d) return '';
+            const parts = d.split('-');
+            if (parts.length !== 3) return d;
+            return parts[2] + '/' + parts[1] + '/' + parts[0];
+        }
+
+        /* ★★ بناء HTML لعرض العدد + التواريخ في السجل ★★ */
+        function buildDatesStat(count, datesArr, chipClass) {
+            let html = '<div class="stat-value-with-dates">';
+            html += '<span class="stat-value-main" style="color:' + (chipClass === 'danger-chip' ? 'var(--danger)' : chipClass === 'cyan-chip' ? 'var(--neon-cyan)' : 'var(--warning)') + ';">' + count + ' مرات</span>';
+            if (datesArr && datesArr.length > 0) {
+                html += '<div class="stat-dates-list">';
+                datesArr.forEach(d => {
+                    html += '<span class="stat-date-chip ' + chipClass + '">' + fmtDate(d) + '</span>';
+                });
+                html += '</div>';
+            }
+            html += '</div>';
+            return html;
+        }
+
+        window.selectEmployee = function(id, name, element) {
+            currentEmpId = id;
+            document.getElementById('welcome').style.display = "none";
+            document.getElementById('mainForm').style.display = "block";
+            document.getElementById('empHeaderName').innerText = name;
+            
+            document.querySelectorAll('.card, .save-btn').forEach(c => c.style.display = "block");
+            document.getElementById('cancelEditBtn').style.display = "none";
+
+            document.querySelectorAll('.emp-item').forEach(el => el.classList.remove('active'));
+            if(element && element.classList) element.classList.add('active');
+            
+            resetForm();
+            loadHistory(id);
+        }
+
+        /* ★★ التقرير العام - محدث ★★ */
+        window.showGeneralReport = function() {
+            const selectedMonth = document.getElementById('reportDate').value;
+            if (!selectedMonth) return alert("الرجاء تحديد الشهر أولاً");
+            
+            currentEmpId = ""; 
+            document.querySelectorAll('.emp-item').forEach(el => el.classList.remove('active'));
+            document.getElementById('welcome').style.display = "none";
+            document.getElementById('mainForm').style.display = "block";
+            document.getElementById('empHeaderName').innerText = "التقرير العام لشهر: " + selectedMonth;
+            
+            const cardsToHide = document.querySelectorAll('.card:not(:last-child), .save-btn');
+            cardsToHide.forEach(c => c.style.display = "none");
+            document.getElementById('reportDate').parentElement.style.display = "block";
+
+            const body = document.getElementById('historyBody');
+            body.innerHTML = '<div class="no-records">جاري تجميع البيانات...</div>';
+
+            onValue(ref(db, 'employees'), (empSnap) => {
+                const employees = empSnap.val() || {};
+                
+                onValue(ref(db, 'qpi_records'), (recordsSnap) => {
+                    body.innerHTML = "";
+                    let foundAny = false;
+
+                    recordsSnap.forEach((empRecord) => {
+                        const empId = empRecord.key;
+                        const empName = employees[empId]?.name || "موظف غير معروف";
+                        
+                        empRecord.forEach((record) => {
+                            const r = record.val();
+                            if (r.date === selectedMonth) {
+                                foundAny = true;
+                                const deductionText = r.mgrDeduction || 'لا يوجد';
+                                const deductionClass = deductionText !== 'لا يوجد' ? 'tag-danger' : 'tag';
+                                // ★ قراءة المصفوفات أو القيم القديمة
+                                const sc = r.shiftChangeDates || (r.shiftChange ? [r.shiftChange] : []);
+                                const wh = r.workHolidayDates || (r.workHoliday ? [r.workHoliday] : []);
+                                const sa = r.shiftAbsenceDates || (r.shiftAbsence ? [r.shiftAbsence] : []);
+
+                                body.innerHTML += `
+                                    <div class="history-card" style="border-top: 4px solid var(--neon-cyan)">
+                                        <div class="history-card-header">
+                                            <div class="history-date">👤 ${empName}</div>
+                                            <div class="history-actions">
+                                                <button class="history-btn history-edit-btn" 
+                                                    style="background: rgba(6, 182, 212, 0.1); color: var(--neon-cyan); border-color: var(--neon-cyan);" 
+                                                    onclick="selectEmployee('${empId}', '${empName}', null)">📂 فتح ملفه</button>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="history-stats">
+                                            <div class="stat-box">
+                                                <div class="stat-label">🍹 المعلبات و المخللات</div>
+                                                <div class="stat-value cyan">${r.food || 0}</div>
+                                            </div>
+                                            <div class="stat-box">
+                                                <div class="stat-label">🔥 الجريل</div>
+                                                <div class="stat-value blue">${r.grill || 0}</div>
+                                            </div>
+                                            <div class="stat-box">
+                                                <div class="stat-label">⭐ الكواليتي</div>
+                                                <div class="stat-value success">${r.quality ? (r.quality.toString().includes('%') ? r.quality : r.quality + '%') : '-'}</div>
+                                            </div>
+                                            <div class="stat-box">
+                                                <div class="stat-label">⚠️ شكاوى</div>
+                                                <div class="stat-value danger">${r.comp || 0}</div>
+                                            </div>
+                                            <div class="stat-box">
+                                                <div class="stat-label">📦 عداد الأوردرات</div>
+                                                <div class="stat-value" style="color: var(--warning);">${r.orders || 0}</div>
+                                            </div>
+                                            <div class="stat-box">
+                                                <div class="stat-label">🔄 تغيير شيفت</div>
+                                                ${buildDatesStat(sc.length, sc, 'warning-chip')}
+                                            </div>
+                                            <div class="stat-box">
+                                                <div class="stat-label">🏖️ نزل إجازة</div>
+                                                ${buildDatesStat(wh.length, wh, 'cyan-chip')}
+                                            </div>
+                                            <div class="stat-box">
+                                                <div class="stat-label">❌ غياب وردية</div>
+                                                ${buildDatesStat(sa.length, sa, 'danger-chip')}
+                                            </div>
+                                        </div>
+
+                                        <div class="history-footer">
+                                            <span>خصم المدير:</span>
+                                            <span class="${deductionClass}">${deductionText}</span>
+                                        </div>
+                                    </div>
+                                `;
+                            }
+                        });
+                    });
+
+                    if (!foundAny) {
+                        body.innerHTML = `<div class="no-records">لا توجد سجلات مسجلة لأي موظف في شهر ${selectedMonth}</div>`;
+                    }
+                }, { onlyOnce: true });
+            }, { onlyOnce: true });
+        }
 
         window.deleteSpecificEmployee = function(id, name) {
             if (confirm(`⚠️ هل أنت متأكد من حذف الموظف "${name}" وجميع سجلاته؟`)) {
@@ -847,22 +848,30 @@ window.showGeneralReport = function() {
             }
         }
 
-     function resetForm() {
-    isEditing = false;
-    editingRecId = null;
-    document.getElementById('saveBtn').innerText = "💾 حفظ التقييم الشهري";
-    document.getElementById('cancelEditBtn').style.display = "none";
-    
-    document.querySelectorAll('#mainForm input[type="number"], #mainForm input[type="text"]').forEach(inp => {
-        if(inp.id !== 'reportDate') {
-            inp.value = inp.type === 'number' ? '0' : '';
+        /* ★★ تفريغ الفورم بالكامل ★★ */
+        function resetForm() {
+            isEditing = false;
+            editingRecId = null;
+            document.getElementById('saveBtn').innerText = "💾 حفظ التقييم الشهري";
+            document.getElementById('cancelEditBtn').style.display = "none";
+            
+            document.querySelectorAll('#mainForm input[type="number"]').forEach(inp => {
+                if(inp.id !== 'reportDate') inp.value = '0';
+            });
+            document.getElementById('quality').value = '';
+            document.getElementById('foodTotal').innerText = '0';
+            document.getElementById('mgrDeduction').value = 'لا يوجد';
+            
+            // ★ تفريغ التواريخ الثلاث
+            ['shiftChangeDates', 'workHolidayDates', 'shiftAbsenceDates'].forEach(id => {
+                document.getElementById(id).innerHTML = '<div class="dates-empty">لم يتم إضافة تواريخ بعد</div>';
+            });
+            document.getElementById('shiftChangeCount').textContent = '0 مرات';
+            document.getElementById('workHolidayCount').textContent = '0 مرات';
+            document.getElementById('shiftAbsenceCount').textContent = '0 مرات';
         }
-    });
-    document.getElementById('orders').value = '0'; // إضافة هذا السطر
-    document.getElementById('foodTotal').innerText = '0';
-    document.getElementById('mgrDeduction').value = 'لا يوجد'; 
-}
 
+        /* ★★ تعبئة الفورم عند التعديل ★★ */
         window.editRecord = function(recId) {
             const empId = currentEmpId;
             const recRef = ref(db, 'qpi_records/' + empId + '/' + recId);
@@ -875,12 +884,18 @@ window.showGeneralReport = function() {
                 document.getElementById('foodTotal').innerText = r.food;
                 document.getElementById('grill').value = r.grill || 0;
                 document.getElementById('quality').value = r.quality || '';
-            document.getElementById('orders').value = r.orders || 0; // أضف هذا السطر            
+                document.getElementById('orders').value = r.orders || 0;
                 document.getElementById('comp').value = r.comp || 0;
-                document.getElementById('shiftChange').value = r.shiftChange || 0;
-                document.getElementById('workHoliday').value = r.workHoliday || 0;
-                document.getElementById('shiftAbsence').value = r.shiftAbsence || 0;
                 document.getElementById('mgrDeduction').value = r.mgrDeduction || 'لا يوجد';
+
+                // ★ تعبئة التواريخ (متوافق مع القديم والجديد)
+                const sc = r.shiftChangeDates || (r.shiftChange ? [r.shiftChange] : []);
+                const wh = r.workHolidayDates || (r.workHoliday ? [r.workHoliday] : []);
+                const sa = r.shiftAbsenceDates || (r.shiftAbsence ? [r.shiftAbsence] : []);
+
+                fillDatesContainer('shiftChangeDates', sc);
+                fillDatesContainer('workHolidayDates', wh);
+                fillDatesContainer('shiftAbsenceDates', sa);
 
                 isEditing = true;
                 editingRecId = recId;
@@ -888,46 +903,60 @@ window.showGeneralReport = function() {
                 document.getElementById('saveBtn').innerText = "🔄 تحديث التقييم";
                 document.getElementById('cancelEditBtn').style.display = "block";
                 
-                // التمرير لأعلى الصفحة
                 document.getElementById('mainForm').scrollIntoView({ behavior: 'smooth', block: 'start' });
             }, { onlyOnce: true });
         }
 
+        /* ★★ تعبئة حاوية تواريخ بمصفوفة ★★ */
+        function fillDatesContainer(containerId, datesArr) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = '';
+            if (!datesArr || datesArr.length === 0) {
+                container.innerHTML = '<div class="dates-empty">لم يتم إضافة تواريخ بعد</div>';
+            } else {
+                datesArr.forEach(d => {
+                    const row = document.createElement('div');
+                    row.className = 'date-row';
+                    row.innerHTML = `
+                        <input type="date" value="${d}">
+                        <button type="button" class="remove-date-btn" onclick="this.parentElement.remove(); updateDateCount('${containerId}');">✕</button>
+                    `;
+                    container.appendChild(row);
+                });
+            }
+            updateDateCount(containerId);
+        }
+
+        /* ★★ حفظ التقييم ★★ */
         window.saveRecord = function() {
             const dateInput = document.getElementById('reportDate').value;
             if (!dateInput) return alert("⚠️ الرجاء اختيار الشهر أولاً!");
+
+            // ★ جمع التواريخ كمصفوفات
+            const scDates = collectDates('shiftChangeDates');
+            const whDates = collectDates('workHolidayDates');
+            const saDates = collectDates('shiftAbsenceDates');
 
             const data = {
                 date: dateInput,
                 food: document.getElementById('foodTotal').innerText,
                 grill: document.getElementById('grill').value,
-                        orders: document.getElementById('orders').value, // أضف هذا السطر
-
+                orders: document.getElementById('orders').value,
                 quality: document.getElementById('quality').value,
                 comp: document.getElementById('comp').value, 
-                shiftChange: document.getElementById('shiftChange').value,
-                workHoliday: document.getElementById('workHoliday').value,
-                shiftAbsence: document.getElementById('shiftAbsence').value,
+                shiftChangeDates: scDates,
+                workHolidayDates: whDates,
+                shiftAbsenceDates: saDates,
                 mgrDeduction: document.getElementById('mgrDeduction').value 
             };
 
             if (isEditing && editingRecId) {
-                // وضع التعديل
                 update(ref(db, 'qpi_records/' + currentEmpId + '/' + editingRecId), data)
-                  .then(() => {
-                      alert("✅ تم تحديث التقييم بنجاح!");
-                      resetForm();
-                      loadHistory(currentEmpId);
-                  })
+                  .then(() => { alert("✅ تم تحديث التقييم بنجاح!"); resetForm(); loadHistory(currentEmpId); })
                   .catch(err => alert("حدث خطأ: " + err));
             } else {
-                // وضع الحفظ الجديد
                 push(ref(db, 'qpi_records/' + currentEmpId), data)
-                  .then(() => {
-                      alert("✅ تم حفظ التقييم بنجاح!");
-                      resetForm();
-                      loadHistory(currentEmpId);
-                  })
+                  .then(() => { alert("✅ تم حفظ التقييم بنجاح!"); resetForm(); loadHistory(currentEmpId); })
                   .catch(err => alert("حدث خطأ: " + err));
             }
         }
@@ -950,138 +979,109 @@ window.showGeneralReport = function() {
 
         const themeToggle = document.getElementById('themeToggle');
         const savedTheme = localStorage.getItem('theme');
-        if (savedTheme === 'light') {
-            document.body.classList.add('light-mode');
-            themeToggle.innerText = '☀️';
-        }
+        if (savedTheme === 'light') { document.body.classList.add('light-mode'); themeToggle.innerText = '☀️'; }
 
         themeToggle.addEventListener('click', () => {
             document.body.classList.toggle('light-mode');
-            if (document.body.classList.contains('light-mode')) {
-                themeToggle.innerText = '☀️';
-                localStorage.setItem('theme', 'light');
-            } else {
-                themeToggle.innerText = '🌙';
-                localStorage.setItem('theme', 'dark');
-            }
+            if (document.body.classList.contains('light-mode')) { themeToggle.innerText = '☀️'; localStorage.setItem('theme', 'light'); }
+            else { themeToggle.innerText = '🌙'; localStorage.setItem('theme', 'dark'); }
         });
 
-        window.openModal = function() {
-            document.getElementById('empModal').classList.add('active');
-            document.getElementById('newEmpName').focus();
-        }
-
-        window.closeModal = function() {
-            document.getElementById('empModal').classList.remove('active');
-            document.getElementById('newEmpName').value = '';
-        }
+        window.openModal = function() { document.getElementById('empModal').classList.add('active'); document.getElementById('newEmpName').focus(); }
+        window.closeModal = function() { document.getElementById('empModal').classList.remove('active'); document.getElementById('newEmpName').value = ''; }
 
         document.getElementById('saveEmpBtn').addEventListener('click', () => {
             const name = document.getElementById('newEmpName').value.trim();
             if (!name) return alert("اكتب اسم الموظف الأول!");
-            
             const newEmpRef = push(ref(db, 'employees'));
-            set(newEmpRef, { name: name })
-              .then(() => {
-                  alert("تم إضافة الموظف بنجاح!");
-                  closeModal();
-              })
-              .catch(err => alert("خطأ: " + err));
+            set(newEmpRef, { name: name }).then(() => { alert("تم إضافة الموظف بنجاح!"); closeModal(); }).catch(err => alert("خطأ: " + err));
         });
 
-        document.getElementById('cancelEditBtn').addEventListener('click', () => {
-            if(confirm("هل تريد إلغاء التعديل؟")) {
-                resetForm();
-            }
-        });
+        document.getElementById('cancelEditBtn').addEventListener('click', () => { if(confirm("هل تريد إلغاء التعديل؟")) resetForm(); });
 
-   function loadHistory(id) {
-    if (currentHistoryRef) {
-        onValue(currentHistoryRef, () => {}, () => {});
-    }
-    
-    currentHistoryRef = ref(db, 'qpi_records/' + id);
-    const body = document.getElementById('historyBody');
-    const selectedMonth = document.getElementById('reportDate').value;
+        /* ★★ عرض السجل الفردي - محدث ★★ */
+        function loadHistory(id) {
+            if (currentHistoryRef) { onValue(currentHistoryRef, () => {}, () => {}); }
+            
+            currentHistoryRef = ref(db, 'qpi_records/' + id);
+            const body = document.getElementById('historyBody');
+            const selectedMonth = document.getElementById('reportDate').value;
 
-    onValue(currentHistoryRef, (snap) => {
-        body.innerHTML = "";
-        let hasRecords = false;
+            onValue(currentHistoryRef, (snap) => {
+                body.innerHTML = "";
+                let hasRecords = false;
 
-        if (!snap.exists()) {
-            body.innerHTML = '<div class="no-records">لا توجد بيانات مسجلة لهذا الموظف</div>';
-            return;
-        }
+                if (!snap.exists()) { body.innerHTML = '<div class="no-records">لا توجد بيانات مسجلة لهذا الموظف</div>'; return; }
 
-        snap.forEach(child => {
-            const r = child.val();
-            if (r.date === selectedMonth) {
-                hasRecords = true;
-                const deductionText = r.mgrDeduction || 'لا يوجد';
-                const deductionClass = deductionText !== 'لا يوجد' ? 'tag-danger' : 'tag';
-                
-                const cardHtml = `
-                    <div class="history-card">
-                        <div class="history-card-header">
-                            <div class="history-date">📅 تقرير شهر: ${r.date}</div>
-                            <div class="history-actions">
-                                <button class="history-btn history-edit-btn" onclick="editRecord('${child.key}')">✏️</button>
-                                <button class="history-btn history-delete-btn" onclick="deleteRec('${id}','${child.key}')">🗑️</button>
-                            </div>
-                        </div>
+                snap.forEach(child => {
+                    const r = child.val();
+                    if (r.date === selectedMonth) {
+                        hasRecords = true;
+                        const deductionText = r.mgrDeduction || 'لا يوجد';
+                        const deductionClass = deductionText !== 'لا يوجد' ? 'tag-danger' : 'tag';
+                        // ★ قراءة المصفوفات أو القيم القديمة للتوافق
+                        const sc = r.shiftChangeDates || (r.shiftChange ? [r.shiftChange] : []);
+                        const wh = r.workHolidayDates || (r.workHoliday ? [r.workHoliday] : []);
+                        const sa = r.shiftAbsenceDates || (r.shiftAbsence ? [r.shiftAbsence] : []);
                         
-                        <div class="history-stats">
-                             <div class="stat-box">
-                                <div class="stat-label">🍹 المعلبات و المخللات</div>
-                                <div class="stat-value cyan">${r.food || 0}</div>
-                            </div>
-                           
-                            <div class="stat-box">
-                                <div class="stat-label">🔥 الجريل</div>
-                                <div class="stat-value blue">${r.grill || 0}</div>
-                            </div>
-                               <div class="stat-box">
-                                <div class="stat-label">⚠️ شكاوى</div>
-                                <div class="stat-value danger">${r.comp || 0}</div>
-                            </div>
-                       
-                            <div class="stat-box">
-                                <div class="stat-label">⭐ الكواليتي</div>
-                                <div class="stat-value success">${r.quality ? (r.quality.toString().includes('%') ? r.quality : r.quality + '%') : '-'}</div>
-                            </div>
-                            <div class="stat-box">
-                                <div class="stat-label">📦  عداد لأوردرات</div>
-                                <div class="stat-value" style="color: var(--warning);">${r.orders || 0}</div>
-                            </div>
-                            <div class="stat-box">
-                                <div class="stat-label">🔄 تغيير شيفت</div>
-                                <div class="stat-value">${r.shiftChange || 0}</div>
-                            </div>
-                            <div class="stat-box">
-                                <div class="stat-label">🏖️ نزل إجازة</div>
-                                <div class="stat-value">${r.workHoliday || 0}</div>
-                            </div>
-                            <div class="stat-box">
-                                <div class="stat-label">❌ غياب وردية</div>
-                                <div class="stat-value danger">${r.shiftAbsence || 0}</div>
-                            </div>
-                        </div>
+                        const cardHtml = `
+                            <div class="history-card">
+                                <div class="history-card-header">
+                                    <div class="history-date">📅 تقرير شهر: ${r.date}</div>
+                                    <div class="history-actions">
+                                        <button class="history-btn history-edit-btn" onclick="editRecord('${child.key}')">✏️</button>
+                                        <button class="history-btn history-delete-btn" onclick="deleteRec('${id}','${child.key}')">🗑️</button>
+                                    </div>
+                                </div>
+                                
+                                <div class="history-stats">
+                                    <div class="stat-box">
+                                        <div class="stat-label">🍹 المعلبات و المخللات</div>
+                                        <div class="stat-value cyan">${r.food || 0}</div>
+                                    </div>
+                                    <div class="stat-box">
+                                        <div class="stat-label">🔥 الجريل</div>
+                                        <div class="stat-value blue">${r.grill || 0}</div>
+                                    </div>
+                                    <div class="stat-box">
+                                        <div class="stat-label">⚠️ شكاوى</div>
+                                        <div class="stat-value danger">${r.comp || 0}</div>
+                                    </div>
+                                    <div class="stat-box">
+                                        <div class="stat-label">⭐ الكواليتي</div>
+                                        <div class="stat-value success">${r.quality ? (r.quality.toString().includes('%') ? r.quality : r.quality + '%') : '-'}</div>
+                                    </div>
+                                    <div class="stat-box">
+                                        <div class="stat-label">📦 عداد الأوردرات</div>
+                                        <div class="stat-value" style="color: var(--warning);">${r.orders || 0}</div>
+                                    </div>
+                                    <div class="stat-box">
+                                        <div class="stat-label">🔄 تغيير شيفت</div>
+                                        ${buildDatesStat(sc.length, sc, 'warning-chip')}
+                                    </div>
+                                    <div class="stat-box">
+                                        <div class="stat-label">🏖️ نزل إجازة</div>
+                                        ${buildDatesStat(wh.length, wh, 'cyan-chip')}
+                                    </div>
+                                    <div class="stat-box">
+                                        <div class="stat-label">❌ غياب وردية</div>
+                                        ${buildDatesStat(sa.length, sa, 'danger-chip')}
+                                    </div>
+                                </div>
 
-                        <div class="history-footer">
-                            <span>خصم المدير:</span>
-                            <span class="${deductionClass}">${deductionText}</span>
-                        </div>
-                    </div>
-                `;
-                body.innerHTML += cardHtml;
-            }
-        });
+                                <div class="history-footer">
+                                    <span>خصم المدير:</span>
+                                    <span class="${deductionClass}">${deductionText}</span>
+                                </div>
+                            </div>
+                        `;
+                        body.innerHTML += cardHtml;
+                    }
+                });
 
-        if (!hasRecords) {
-            body.innerHTML = `<div class="no-records">لا توجد سجلات لشهر ${selectedMonth}</div>`;
+                if (!hasRecords) { body.innerHTML = `<div class="no-records">لا توجد سجلات لشهر ${selectedMonth}</div>`; }
+            });
         }
-    });
-}
 
         document.getElementById('saveBtn').addEventListener('click', window.saveRecord);
 
@@ -1093,64 +1093,36 @@ window.showGeneralReport = function() {
             });
         });
 
-        // إخفاء السجلات عند تغيير الشهر
-      // تحديث البيانات تلقائياً عند تغيير الشهر
-document.getElementById('reportDate').addEventListener('change', () => {
-    const selectedMonth = document.getElementById('reportDate').value;
-    const headerName = document.getElementById('empHeaderName').innerText;
-
-    // إذا كنا في وضع "التقرير العام"
-    if (headerName.includes("التقرير العام")) {
-        window.showGeneralReport();
-    } 
-    // إذا كان هناك موظف محدد حالياً
-    else if (currentEmpId) {
-        // لا نحتاج لعمل resetForm هنا لكي لا نمسح البيانات أثناء الإدخال، فقط نحدث السجل بالأسفل
-        loadHistory(currentEmpId);
-    }
-});
+        document.getElementById('reportDate').addEventListener('change', () => {
+            const headerName = document.getElementById('empHeaderName').innerText;
+            if (headerName.includes("التقرير العام")) { window.showGeneralReport(); }
+            else if (currentEmpId) { loadHistory(currentEmpId); }
+        });
 
         const empRef = ref(db, 'employees');
         onValue(empRef, (snapshot) => {
-            if (snapshot.exists()) {
-                renderList(snapshot);
-            } else {
-                onValue(ref(db, 'users'), (snap) => renderList(snap));
-            }
+            if (snapshot.exists()) { renderList(snapshot); }
+            else { onValue(ref(db, 'users'), (snap) => renderList(snap)); }
         });
 
         function renderList(snapshot) {
             const list = document.getElementById('empList');
             list.innerHTML = "";
-            if (!snapshot.exists()) {
-                list.innerHTML = '<li style="text-align:center; padding:20px; color:var(--text-muted);">لا يوجد موظفين مسجلين</li>';
-                return;
-            }
+            if (!snapshot.exists()) { list.innerHTML = '<li style="text-align:center; padding:20px; color:var(--text-muted);">لا يوجد موظفين مسجلين</li>'; return; }
             snapshot.forEach((child) => {
                 const emp = child.val();
                 const id = child.key;
                 const name = emp.name || emp.empName || emp; 
-                const firstLetter = name.charAt(0);
-                
                 const li = document.createElement('li');
                 li.className = 'emp-item';
-                
                 li.innerHTML = `
                     <div class="emp-info-wrapper">
-                        <div class="emp-avatar">${firstLetter}</div>
+                        <div class="emp-avatar">${name.charAt(0)}</div>
                         <div class="emp-name">${name}</div>
                     </div>
-                    <button class="list-delete-btn" onclick="event.stopPropagation(); deleteSpecificEmployee('${id}', '${name}')">
-                        🗑️
-                    </button>
+                    <button class="list-delete-btn" onclick="event.stopPropagation(); deleteSpecificEmployee('${id}', '${name}')">🗑️</button>
                 `;
-                
-                li.onclick = (e) => {
-                    if (!e.target.classList.contains('list-delete-btn')) {
-                        window.selectEmployee(id, name, li);
-                    }
-                };
-                
+                li.onclick = (e) => { if (!e.target.classList.contains('list-delete-btn')) window.selectEmployee(id, name, li); };
                 list.appendChild(li);
             });
         }
