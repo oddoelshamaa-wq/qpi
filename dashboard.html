@@ -730,17 +730,18 @@
     loadHistory(id);
 }
         // وظيفة لعرض تقرير جميع الموظفين لشهر معين
+// وظيفة لعرض تقرير جميع الموظفين لشهر معين بتنسيق مطابق للسجل الفردي
 window.showGeneralReport = function() {
     const selectedMonth = document.getElementById('reportDate').value;
     if (!selectedMonth) return alert("الرجاء تحديد الشهر أولاً");
-
+    
     currentEmpId = ""; 
     document.querySelectorAll('.emp-item').forEach(el => el.classList.remove('active'));
     document.getElementById('welcome').style.display = "none";
     document.getElementById('mainForm').style.display = "block";
     document.getElementById('empHeaderName').innerText = "التقرير العام لشهر: " + selectedMonth;
     
-    // إخفاء حقول الإدخال
+    // إخفاء حقول الإدخال وإظهار منطقة التقرير فقط
     const cardsToHide = document.querySelectorAll('.card:not(:last-child), .save-btn');
     cardsToHide.forEach(c => c.style.display = "none");
     document.getElementById('reportDate').parentElement.style.display = "block";
@@ -766,47 +767,49 @@ window.showGeneralReport = function() {
                         const deductionText = r.mgrDeduction || 'لا يوجد';
                         const deductionClass = deductionText !== 'لا يوجد' ? 'tag-danger' : 'tag';
 
-                        // هنا التصميم المطابق تماماً للسجل الفردي
+                        // تصميم مطابق تماماً للسجل الفردي (كما في الصورة الثانية)
                         body.innerHTML += `
                             <div class="history-card" style="border-top: 4px solid var(--neon-cyan)">
                                 <div class="history-card-header">
                                     <div class="history-date">👤 ${empName}</div>
                                     <div class="history-actions">
-                                        <button class="history-btn history-edit-btn" style="background: rgba(6, 182, 212, 0.1); color: var(--neon-cyan); border-color: var(--neon-cyan);" 
-                                            onclick="selectEmployee('${empId}', '${empName}', this)">📂 فتح ملفه</button>
+                                        <button class="history-btn history-edit-btn" 
+                                            style="background: rgba(6, 182, 212, 0.1); color: var(--neon-cyan); border-color: var(--neon-cyan);" 
+                                            onclick="selectEmployee('${empId}', '${empName}', null)">📂 فتح ملفه</button>
                                     </div>
                                 </div>
                                 
                                 <div class="history-stats">
                                     <div class="stat-box">
-                                        <div class="stat-label">المخللات والملعبات</div>
-                                        <div class="stat-value cyan">${r.food}</div>
+                                        <div class="stat-label">🍹 المعلبات و المخللات</div>
+                                        <div class="stat-value cyan">${r.food || 0}</div>
                                     </div>
                                     <div class="stat-box">
-                                        <div class="stat-label">الجريل</div>
-                                        <div class="stat-value blue">${r.grill}</div>
+                                        <div class="stat-label">🔥 الجريل</div>
+                                        <div class="stat-value blue">${r.grill || 0}</div>
                                     </div>
                                     <div class="stat-box">
-                                        <div class="stat-label">الكواليتي</div>
-<div class="stat-value success">${r.quality ? (r.quality.toString().includes('%') ? r.quality : r.quality + '%') : '-'}</div>                                    </div>
+                                        <div class="stat-label">⭐ الكواليتي</div>
+                                        <div class="stat-value success">${r.quality ? (r.quality.toString().includes('%') ? r.quality : r.quality + '%') : '-'}</div>
+                                    </div>
                                     <div class="stat-box">
-                                        <div class="stat-box">
-    <div class="stat-label">عدد الأوردرات</div>
-    <div class="stat-value" style="color: #f59e0b;">${r.orders || 0}</div>
-</div>
-                                        <div class="stat-label">شكاوى</div>
+                                        <div class="stat-label">⚠️ شكاوى</div>
                                         <div class="stat-value danger">${r.comp || 0}</div>
                                     </div>
                                     <div class="stat-box">
-                                        <div class="stat-label">تغيير شيفت</div>
+                                        <div class="stat-label">📦 عداد الأوردرات</div>
+                                        <div class="stat-value" style="color: var(--warning);">${r.orders || 0}</div>
+                                    </div>
+                                    <div class="stat-box">
+                                        <div class="stat-label">🔄 تغيير شيفت</div>
                                         <div class="stat-value">${r.shiftChange || 0}</div>
                                     </div>
                                     <div class="stat-box">
-                                        <div class="stat-label">نزل في إجازة</div>
+                                        <div class="stat-label">🏖️ نزل إجازة</div>
                                         <div class="stat-value">${r.workHoliday || 0}</div>
                                     </div>
                                     <div class="stat-box">
-                                        <div class="stat-label">غياب في وردية</div>
+                                        <div class="stat-label">❌ غياب وردية</div>
                                         <div class="stat-value danger">${r.shiftAbsence || 0}</div>
                                     </div>
                                 </div>
@@ -1091,12 +1094,21 @@ window.showGeneralReport = function() {
         });
 
         // إخفاء السجلات عند تغيير الشهر
-        document.getElementById('reportDate').addEventListener('change', () => {
-            if (currentEmpId) {
-                resetForm(); // تصفير الحقول إذا كان في وضع تعديل
-                loadHistory(currentEmpId);
-            }
-        });
+      // تحديث البيانات تلقائياً عند تغيير الشهر
+document.getElementById('reportDate').addEventListener('change', () => {
+    const selectedMonth = document.getElementById('reportDate').value;
+    const headerName = document.getElementById('empHeaderName').innerText;
+
+    // إذا كنا في وضع "التقرير العام"
+    if (headerName.includes("التقرير العام")) {
+        window.showGeneralReport();
+    } 
+    // إذا كان هناك موظف محدد حالياً
+    else if (currentEmpId) {
+        // لا نحتاج لعمل resetForm هنا لكي لا نمسح البيانات أثناء الإدخال، فقط نحدث السجل بالأسفل
+        loadHistory(currentEmpId);
+    }
+});
 
         const empRef = ref(db, 'employees');
         onValue(empRef, (snapshot) => {
