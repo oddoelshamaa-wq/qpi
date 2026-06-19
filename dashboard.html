@@ -1028,25 +1028,27 @@ window.showGeneralReport = function() {
                         </div>
                         
                         <div class="history-stats">
-                            <div class="stat-box">
-                                <div class="stat-label">📦  عداد لأوردرات</div>
-                                <div class="stat-value" style="color: var(--warning);">${r.orders || 0}</div>
+                             <div class="stat-box">
+                                <div class="stat-label">🍹 المعلبات و المخللات</div>
+                                <div class="stat-value cyan">${r.food || 0}</div>
                             </div>
+                           
                             <div class="stat-box">
                                 <div class="stat-label">🔥 الجريل</div>
                                 <div class="stat-value blue">${r.grill || 0}</div>
                             </div>
-                            <div class="stat-box">
-                                <div class="stat-label">🍹 المعلبات و المخللات</div>
-                                <div class="stat-value cyan">${r.food || 0}</div>
+                               <div class="stat-box">
+                                <div class="stat-label">⚠️ شكاوى</div>
+                                <div class="stat-value danger">${r.comp || 0}</div>
                             </div>
+                       
                             <div class="stat-box">
                                 <div class="stat-label">⭐ الكواليتي</div>
                                 <div class="stat-value success">${r.quality ? (r.quality.toString().includes('%') ? r.quality : r.quality + '%') : '-'}</div>
                             </div>
                             <div class="stat-box">
-                                <div class="stat-label">⚠️ شكاوى</div>
-                                <div class="stat-value danger">${r.comp || 0}</div>
+                                <div class="stat-label">📦  عداد لأوردرات</div>
+                                <div class="stat-value" style="color: var(--warning);">${r.orders || 0}</div>
                             </div>
                             <div class="stat-box">
                                 <div class="stat-label">🔄 تغيير شيفت</div>
