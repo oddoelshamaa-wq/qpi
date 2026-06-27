@@ -849,64 +849,70 @@
         }
 
         /* ★★ تفريغ الفورم بالكامل ★★ */
-        function resetForm() {
-            isEditing = false;
-            editingRecId = null;
-            document.getElementById('saveBtn').innerText = "💾 حفظ التقييم الشهري";
-            document.getElementById('cancelEditBtn').style.display = "none";
-            
-            document.querySelectorAll('#mainForm input[type="number"]').forEach(inp => {
-                if(inp.id !== 'reportDate') inp.value = '0';
-            });
-            document.getElementById('quality').value = '';
-            document.getElementById('foodTotal').innerText = '0';
-            document.getElementById('mgrDeduction').value = 'لا يوجد';
-            
-            // ★ تفريغ التواريخ الثلاث
-            ['shiftChangeDates', 'workHolidayDates', 'shiftAbsenceDates'].forEach(id => {
-                document.getElementById(id).innerHTML = '<div class="dates-empty">لم يتم إضافة تواريخ بعد</div>';
-            });
-            document.getElementById('shiftChangeCount').textContent = '0 مرات';
-            document.getElementById('workHolidayCount').textContent = '0 مرات';
-            document.getElementById('shiftAbsenceCount').textContent = '0 مرات';
-        }
+    function resetForm() {
+    isEditing = false;
+    editingRecId = null;
+    document.getElementById('saveBtn').innerText = "💾 حفظ التقييم الشهري";
+    document.getElementById('cancelEditBtn').style.display = "none";
+    
+    // تصفير كل خانات الأرقام بما فيها المخللات
+    document.querySelectorAll('#mainForm input[type="number"]').forEach(inp => {
+        if(inp.id !== 'reportDate') inp.value = '0';
+    });
+
+    document.getElementById('quality').value = '';
+    document.getElementById('foodTotal').innerText = '0';
+    document.getElementById('mgrDeduction').value = 'لا يوجد';
+    
+    ['shiftChangeDates', 'workHolidayDates', 'shiftAbsenceDates'].forEach(id => {
+        document.getElementById(id).innerHTML = '<div class="dates-empty">لم يتم إضافة تواريخ بعد</div>';
+    });
+    document.getElementById('shiftChangeCount').textContent = '0 مرات';
+    document.getElementById('workHolidayCount').textContent = '0 مرات';
+    document.getElementById('shiftAbsenceCount').textContent = '0 مرات';
+}
 
         /* ★★ تعبئة الفورم عند التعديل ★★ */
-        window.editRecord = function(recId) {
-            const empId = currentEmpId;
-            const recRef = ref(db, 'qpi_records/' + empId + '/' + recId);
-            
-            onValue(recRef, (snap) => {
-                const r = snap.val();
-                if (!r) return alert("السجل غير موجود");
-                
-                document.getElementById('reportDate').value = r.date;
-                document.getElementById('foodTotal').innerText = r.food;
-                document.getElementById('grill').value = r.grill || 0;
-                document.getElementById('quality').value = r.quality || '';
-                document.getElementById('orders').value = r.orders || 0;
-                document.getElementById('comp').value = r.comp || 0;
-                document.getElementById('mgrDeduction').value = r.mgrDeduction || 'لا يوجد';
+    window.editRecord = function(recId) {
+    const empId = currentEmpId;
+    const recRef = ref(db, 'qpi_records/' + empId + '/' + recId);
+    
+    onValue(recRef, (snap) => {
+        const r = snap.val();
+        if (!r) return alert("السجل غير موجود");
+        
+        document.getElementById('reportDate').value = r.date;
+        document.getElementById('foodTotal').innerText = r.food;
+        
+        // استرجاع القيم التفصيلية للمعلبات والمخللات
+        document.getElementById('drinks').value = r.drinks || 0;
+        document.getElementById('p1').value = r.p1 || 0;
+        document.getElementById('p2').value = r.p2 || 0;
+        document.getElementById('e1').value = r.e1 || 0;
+        document.getElementById('e2').value = r.e2 || 0;
 
-                // ★ تعبئة التواريخ (متوافق مع القديم والجديد)
-                const sc = r.shiftChangeDates || (r.shiftChange ? [r.shiftChange] : []);
-                const wh = r.workHolidayDates || (r.workHoliday ? [r.workHoliday] : []);
-                const sa = r.shiftAbsenceDates || (r.shiftAbsence ? [r.shiftAbsence] : []);
+        document.getElementById('grill').value = r.grill || 0;
+        document.getElementById('quality').value = r.quality || '';
+        document.getElementById('orders').value = r.orders || 0;
+        document.getElementById('comp').value = r.comp || 0;
+        document.getElementById('mgrDeduction').value = r.mgrDeduction || 'لا يوجد';
 
-                fillDatesContainer('shiftChangeDates', sc);
-                fillDatesContainer('workHolidayDates', wh);
-                fillDatesContainer('shiftAbsenceDates', sa);
+        const sc = r.shiftChangeDates || (r.shiftChange ? [r.shiftChange] : []);
+        const wh = r.workHolidayDates || (r.workHoliday ? [r.workHoliday] : []);
+        const sa = r.shiftAbsenceDates || (r.shiftAbsence ? [r.shiftAbsence] : []);
 
-                isEditing = true;
-                editingRecId = recId;
-                
-                document.getElementById('saveBtn').innerText = "🔄 تحديث التقييم";
-                document.getElementById('cancelEditBtn').style.display = "block";
-                
-                document.getElementById('mainForm').scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }, { onlyOnce: true });
-        }
+        fillDatesContainer('shiftChangeDates', sc);
+        fillDatesContainer('workHolidayDates', wh);
+        fillDatesContainer('shiftAbsenceDates', sa);
 
+        isEditing = true;
+        editingRecId = recId;
+        
+        document.getElementById('saveBtn').innerText = "🔄 تحديث التقييم";
+        document.getElementById('cancelEditBtn').style.display = "block";
+        document.getElementById('mainForm').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, { onlyOnce: true });
+}
         /* ★★ تعبئة حاوية تواريخ بمصفوفة ★★ */
         function fillDatesContainer(containerId, datesArr) {
             const container = document.getElementById(containerId);
@@ -937,18 +943,26 @@
             const whDates = collectDates('workHolidayDates');
             const saDates = collectDates('shiftAbsenceDates');
 
-            const data = {
-                date: dateInput,
-                food: document.getElementById('foodTotal').innerText,
-                grill: document.getElementById('grill').value,
-                orders: document.getElementById('orders').value,
-                quality: document.getElementById('quality').value,
-                comp: document.getElementById('comp').value, 
-                shiftChangeDates: scDates,
-                workHolidayDates: whDates,
-                shiftAbsenceDates: saDates,
-                mgrDeduction: document.getElementById('mgrDeduction').value 
-            };
+          // داخل دالة window.saveRecord
+const data = {
+    date: dateInput,
+    food: document.getElementById('foodTotal').innerText, // الإجمالي
+    // أضف هذه السطور لحفظ القيم التفصيلية
+    drinks: document.getElementById('drinks').value,
+    p1: document.getElementById('p1').value,
+    p2: document.getElementById('p2').value,
+    e1: document.getElementById('e1').value,
+    e2: document.getElementById('e2').value,
+    
+    grill: document.getElementById('grill').value,
+    orders: document.getElementById('orders').value,
+    quality: document.getElementById('quality').value,
+    comp: document.getElementById('comp').value, 
+    shiftChangeDates: scDates,
+    workHolidayDates: whDates,
+    shiftAbsenceDates: saDates,
+    mgrDeduction: document.getElementById('mgrDeduction').value 
+};
 
             if (isEditing && editingRecId) {
                 update(ref(db, 'qpi_records/' + currentEmpId + '/' + editingRecId), data)
