@@ -594,15 +594,29 @@
                         <input type="number" id="comp" value="0" min="0">
                     </div>
 
-                    <div class="form-group">
-                        <label>خصم المدير</label>
-                        <select id="mgrDeduction">
-                            <option value="لا يوجد">لا يوجد</option>
-                            <option value="ربع يوم">ربع يوم</option>
-                            <option value="نص يوم">نص يوم</option>
-                            <option value="أسبوع">أسبوع</option>
-                        </select>
-                    </div>
+                  <div class="form-group">
+    <label>نوع الخصم</label>
+    <select id="mgrDeduction" onchange="toggleDeductionReason()">
+        <option value="لا يوجد">لا يوجد</option>
+        <option value="ربع يوم">ربع يوم</option>
+        <option value="نص يوم">نص يوم</option>
+        <option value="يوم واحد">يوم واحد</option>
+        <option value="أسبوع">أسبوع</option>
+        <option value="خصم QPI">خصم QPI</option>
+    </select>
+</div>
+ <div class="form-group">
+            <label>خصم QPI</label>
+            <select id="qpiDeduction">
+                <option value="لا يوجد">لا يوجد</option>
+                <option value="خصم QPI">خصم QPI</option>
+            </select>
+        </div>
+<!-- حقل سبب الخصم سيظهر هنا -->
+<div class="form-group" id="reasonGroup" style="display: none; grid-column: 1 / -1; margin-top: 10px;">
+    <label>سبب الخصم</label>
+    <input type="text" id="mgrDeductionReason" placeholder="اكتب سبب الخصم بالتفصيل هنا...">
+</div>
 
                     <!-- ★ تغيير شيفت - عدد + تواريخ -->
                     <div class="form-group" style="grid-column: 1 / -1;">
@@ -1025,6 +1039,8 @@ const data = {
     shiftChangeDates: scDates,
     workHolidayDates: whDates,
     shiftAbsenceDates: saDates,
+        mgrDeductionReason: document.getElementById('mgrDeductionReason').value, // إضافة السبب
+
     mgrDeduction: document.getElementById('mgrDeduction').value 
 };
 
@@ -1130,9 +1146,9 @@ function loadHistory(id) {
                                 <div class="stat-value success">${r.quality ? (r.quality.toString().includes('%') ? r.quality : r.quality + '%') : '-'}</div>
                             </div>
                             <div class="stat-box"> 
-    <div class="stat-label">🧪 الأكسدة</div>
-    <div class="stat-value blue">${r.oxidation || 0}</div>
-</div>
+                                <div class="stat-label">🧪 الأكسدة</div>
+                                <div class="stat-value blue">${r.oxidation || 0}</div>
+                            </div>
                             <div class="stat-box">
                                 <div class="stat-label">📦 عداد الأوردرات</div>
                                 <div class="stat-value" style="color: var(--warning);">${r.orders || 0}</div>
@@ -1158,10 +1174,22 @@ function loadHistory(id) {
                         </div>
                         ` : ''}
 
-                        <div class="history-footer">
-                            <span>خصم المدير:</span>
-                            <span class="${deductionClass}">${deductionText}</span>
-                        </div>
+                     // ابحث عن الجزء الذي يبدأ بـ <div class="history-footer" في دالة loadHistory واستبدله بهذا:
+<div class="history-footer" style="flex-direction: column; align-items: stretch; gap: 8px;">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <span>خصم المدير:</span>
+        <span class="${deductionClass}">${deductionText}</span>
+    </div>
+    <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border); padding-top: 5px;">
+        <span>خصم QPI:</span>
+        <span class="${r.qpiDeduction && r.qpiDeduction !== 'لا يوجد' ? 'tag-danger' : 'tag'}">${r.qpiDeduction || 'لا يوجد'}</span>
+    </div>
+    ${r.mgrDeductionReason ? `
+        <div style="font-size: 0.85rem; color: var(--danger); font-weight: 700; border-top: 1px solid var(--border); padding-top: 5px;">
+            💬 السبب: ${r.mgrDeductionReason}
+        </div>
+    ` : ''}
+</div>
                     </div>
                 `;
                 body.innerHTML += cardHtml;
@@ -1244,6 +1272,16 @@ function loadHistory(id) {
         // 4. إزالة الكلاس بعد الانتهاء لإعادة الشكل الأصلي
         element.classList.remove('pdf-export-mode');
     });
+}
+window.toggleDeductionReason = function() {
+    const deductionVal = document.getElementById('mgrDeduction').value;
+    const reasonGroup = document.getElementById('reasonGroup');
+    if (deductionVal !== "لا يوجد") {
+        reasonGroup.style.display = "flex";
+    } else {
+        reasonGroup.style.display = "none";
+        document.getElementById('mgrDeductionReason').value = "";
+    }
 }
     </script>
 </body>
