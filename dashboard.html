@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Elshamaa | لوحة التحكم</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     
     <style>
         :root {
@@ -460,6 +461,43 @@
             .welcome-msg h1 { font-size: 2rem; }
             .history-grid { grid-template-columns: 1fr; }
         }
+        @media print {
+    .no-print { display: none !important; }
+}
+
+/* تنسيق خاص للـ PDF لضمان عدم ظهور صفحة بيضاء */
+/* تنسيق الـ PDF باللون الأسود */
+.pdf-export-mode {
+    background-color: #09090b !important; /* لون الخلفية الغامق */
+    color: #ffffff !important;
+    padding: 20px !important;
+}
+
+.pdf-export-mode .history-card {
+    background-color: #111114 !important; /* لون الكارت */
+    border: 1px solid #27272a !important;
+    color: #ffffff !important;
+    margin-bottom: 20px !important;
+    break-inside: avoid;
+}
+
+.pdf-export-mode .stat-box {
+    background-color: #18181b !important; /* لون المربعات الداخلية */
+    border: 1px solid #27272a !important;
+}
+
+.pdf-export-mode .stat-label {
+    color: #a1a1aa !important; /* اللون الباهت للعناوين */
+}
+
+.pdf-export-mode .stat-value {
+    color: #ffffff !important;
+}
+
+.pdf-export-mode .history-footer {
+    background-color: #000000 !important;
+    color: #ffffff !important;
+}
     </style>
 </head>
 <body>
@@ -483,6 +521,7 @@
         <div class="action-buttons">
             <button class="add-emp-btn" onclick="openModal()">➕ إضافة موظف</button>
             <button class="add-emp-btn" style="border-color: var(--success); color: var(--success);" onclick="showGeneralReport()">📋 تقرير الشهر العام</button>
+            
         </div>
         
         <ul class="emp-list" id="empList">
@@ -612,7 +651,7 @@
 
             <button class="save-btn" id="saveBtn">💾 حفظ التقييم الشهري</button>
             <button class="save-btn" id="cancelEditBtn" style="display: none; background: linear-gradient(135deg, var(--text-muted), var(--hover-bg)); margin-top: -30px;">❌ إلغاء التعديل</button>
-
+<button class="add-emp-btn" style="border-color: #ef4444; color: #ef4444;" onclick="downloadPDF()">📄 تحميل التقرير PDF</button>
             <div class="card" style="animation-delay: 0.6s;">
                 <div class="card-title">📜 السجل الوظيفي للموظف</div>
                 <div class="history-grid" id="historyBody"></div>
@@ -1178,6 +1217,34 @@ function loadHistory(id) {
         }
 
         document.getElementById('reportDate').value = new Date().toISOString().slice(0, 7);
+        window.downloadPDF = function() {
+    const element = document.getElementById('historyBody');
+    const reportDate = document.getElementById('reportDate').value;
+    const headerName = document.getElementById('empHeaderName').innerText;
+
+    // 1. تجهيز خيارات الـ PDF
+    const opt = {
+        margin: [10, 10, 10, 10],
+        filename: `تقرير_${headerName}_${reportDate}.pdf`,
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { 
+            scale: 2, 
+            useCORS: true, 
+            letterRendering: true,
+            scrollY: 0
+        },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'landscape' } // وضع العرض landscape ليتناسب مع الشبكة
+    };
+
+    // 2. إضافة كلاس مؤقت لتحسين المظهر للطباعة
+    element.classList.add('pdf-export-mode');
+
+    // 3. التنفيذ
+    html2pdf().set(opt).from(element).save().then(() => {
+        // 4. إزالة الكلاس بعد الانتهاء لإعادة الشكل الأصلي
+        element.classList.remove('pdf-export-mode');
+    });
+}
     </script>
 </body>
 </html>
