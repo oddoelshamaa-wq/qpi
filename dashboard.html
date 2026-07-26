@@ -534,6 +534,10 @@
                     <div class="card-title">⭐ الكواليتي</div>
                     <input type="text" id="quality" placeholder="مثلاً 95%" style="width:100%">
                 </div>
+                   <div class="card" style="margin:0; animation-delay: 0.45s;">
+        <div class="card-title">🧪 الأكسدة</div>
+        <input type="number" id="oxidation" value="0" min="0" style="width:100%">
+    </div>
             </div>
 <!-- قسم الملاحظات الجديد -->
 <div class="card" style="animation-delay: 0.55s;">
@@ -905,6 +909,8 @@ window.showGeneralReport = function() {
 
         document.getElementById('grill').value = r.grill || 0;
         document.getElementById('quality').value = r.quality || '';
+        document.getElementById('oxidation').value = r.oxidation || 0; // <--- أضفه هنا
+
         document.getElementById('empNotes').value = r.empNotes || ''; // استرجاع الملاحظات
 
         document.getElementById('orders').value = r.orders || 0;
@@ -969,6 +975,8 @@ const data = {
     grill: document.getElementById('grill').value,
     orders: document.getElementById('orders').value,
     quality: document.getElementById('quality').value,
+        oxidation: document.getElementById('oxidation').value, // إضافة الأكسدة
+
     comp: document.getElementById('comp').value, 
     empNotes: document.getElementById('empNotes').value, // إضافة الملاحظات هنا
     shiftChangeDates: scDates,
@@ -1078,6 +1086,10 @@ function loadHistory(id) {
                                 <div class="stat-label">⭐ الكواليتي</div>
                                 <div class="stat-value success">${r.quality ? (r.quality.toString().includes('%') ? r.quality : r.quality + '%') : '-'}</div>
                             </div>
+                            <div class="stat-box"> 
+    <div class="stat-label">🧪 الأكسدة</div>
+    <div class="stat-value blue">${r.oxidation || 0}</div>
+</div>
                             <div class="stat-box">
                                 <div class="stat-label">📦 عداد الأوردرات</div>
                                 <div class="stat-value" style="color: var(--warning);">${r.orders || 0}</div>
